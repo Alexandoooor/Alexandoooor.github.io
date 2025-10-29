@@ -70,6 +70,24 @@
 
 <h2 id="what-is-a-limit-order-book">What is a Limit Order Book?</h2>
 
+<p>From the Wikipedia article on <a href="https://en.wikipedia.org/wiki/Order_book">Order Books</a>.</p>
+<blockquote>
+  <p>An order book is the list of orders (manual or electronic) that a trading venue (in particular stock exchanges) uses to record the interest of buyers and sellers in a particular financial instrument. A matching engine uses the book to determine which orders can be fully or partially executed.</p>
+</blockquote>
+
+<p>A <em>Limit</em> Order Book is an order book that is comprised of <a href="https://en.wikipedia.org/wiki/Order_(exchange)#Limit_order">Limit orders</a>.</p>
+<blockquote>
+  <p>A limit order is an order to buy a security at no more than a specific price, or to sell a security at no less than a specific price (called “or better” for either direction). This gives the trader (customer) control over the price at which the trade is executed; however, the order may never be executed (“filled”). Limit orders are used when the trader wishes to control price rather than certainty of execution.</p>
+</blockquote>
+
+<p>Another important concept is <a href="https://en.wikipedia.org/wiki/Order_book">Price Levels</a></p>
+<blockquote>
+  <p>When several orders contain the same price, they are referred to as being on a price level. Practically, this means that if a bid comes at that price level, all the sell orders on that price level could potentially fulfill that.</p>
+</blockquote>
+
+<p><img src="/assets/img/ExampleRealBook.png" alt="Example of a real Order Book" />
+<em>Example of a real order book</em></p>
+
 <h3 id="how-can-we-model-a-limit-order-book-in-code">How can we model a Limit Order Book in code?</h3>
 
 <div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">OrderBook</span> <span class="k">struct</span> <span class="p">{</span>
@@ -93,7 +111,7 @@
 </code></pre></div></div>
 
 <div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Order</span> <span class="k">struct</span> <span class="p">{</span>
-	<span class="n">Id</span>          <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span>
+	<span class="n">ID</span>          <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span>
 	<span class="n">Side</span>        <span class="n">Side</span>
 	<span class="n">Size</span>        <span class="kt">int</span>
 	<span class="n">Remaining</span>   <span class="kt">int</span>
