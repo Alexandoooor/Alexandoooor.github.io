@@ -83,10 +83,6 @@ func main() {
 }
 ```
 
-### There's a horizontal rule below this.
-
-* * *
-
 ### A simple Web-UI
 
 ![Limit Order Book](/assets/img/LimitOrderBook.png)
