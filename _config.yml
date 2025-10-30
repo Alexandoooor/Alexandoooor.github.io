@@ -1,5 +1,7 @@
 ---
 theme: jekyll-theme-minimal
-title: Alexander's homepage
+title: Alexander's Portfolio
 description: A collection of my projects and thoughts!
 show_downloads: false
+
+permalink: /posts/:title/
