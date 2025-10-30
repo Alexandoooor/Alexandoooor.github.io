@@ -50,8 +50,8 @@
         <p>A collection of my projects and thoughts!</p>
 
         <ul>
-            <li><a href="/posts/">Posts</a></li>
-            <li><a href="/about/">About me</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/about">About me</a></li>
             <li><a href="https://github.com/Alexandoooor">View My GitHub Profile</a></li>
         </ul>
 
@@ -225,7 +225,7 @@ Furthermore, many of the components are highly interconnected and it is importan
 I have tried both dumping it to JSON and also writing and reading the state to a PostgreSQL database.</p>
 
 <p>But I have not figured out completely when to read/write the state of the order book to the DB in order to keep the state correct.
-In the JSON-case I could just keep one JSON-file with the whole state(<code class="language-plaintext highlighter-rouge">OrderBook</code>, <code class="language-plaintext highlighter-rouge">Level</code>, <code class="language-plaintext highlighter-rouge">Order</code> and <code class="language-plaintext highlighter-rouge">Trade</code> objects serialized).
+In the JSON-case I could just keep one JSON-file with the whole state (<code class="language-plaintext highlighter-rouge">OrderBook</code>, <code class="language-plaintext highlighter-rouge">Level</code>, <code class="language-plaintext highlighter-rouge">Order</code> and <code class="language-plaintext highlighter-rouge">Trade</code> objects) serialized.
 At each change, adding a new order for example, I would just dump the state of all objects to the file, ensuring that the JSON-file always reflected the in-memory state.</p>
 
 <p>This is not a pretty solution, and it did obviously not work for the database, as it would be insane to overwrite the whole database at each update.

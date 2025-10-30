@@ -49,8 +49,8 @@
         <p>A collection of my projects and thoughts!</p>
 
         <ul>
-            <li><a href="/posts/">Posts</a></li>
-            <li><a href="/about/">About me</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/about">About me</a></li>
             <li><a href="https://github.com/Alexandoooor">View My GitHub Profile</a></li>
         </ul>
 

@@ -147,7 +147,7 @@ I have also dabbled with persiting the state of the order book.
 I have tried both dumping it to JSON and also writing and reading the state to a PostgreSQL database.
 
 But I have not figured out completely when to read/write the state of the order book to the DB in order to keep the state correct.
-In the JSON-case I could just keep one JSON-file with the whole state(`OrderBook`, `Level`, `Order` and `Trade` objects serialized).
+In the JSON-case I could just keep one JSON-file with the whole state (`OrderBook`, `Level`, `Order` and `Trade` objects) serialized.
 At each change, adding a new order for example, I would just dump the state of all objects to the file, ensuring that the JSON-file always reflected the in-memory state.
 
 This is not a pretty solution, and it did obviously not work for the database, as it would be insane to overwrite the whole database at each update.
