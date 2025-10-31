@@ -67,18 +67,27 @@
 
 <p>My Homelab is used, both as a lab, where I tinker and experiment.
 But it is also used to self-host sevices that I use in my everyday life,
-such as Home assistant.</p>
+such as Home Assistant and Samba shares.</p>
 
 <h2 id="setup">Setup</h2>
+<h3 id="networking">Networking</h3>
 <ul>
   <li>Unifi Cloud Gateway Ultra</li>
   <li>Unifi Switch Ultra PoE</li>
   <li>Unifi U6</li>
-  <li>Mini PC</li>
 </ul>
 
-<h3 id="mini-pc">Mini PC</h3>
-<p>The Mini PC is a Minisforum UN150P with</p>
+<p>My network is segmented into VLANs with strict firewall rules. Devices on the IoT network are not allowed to access devices on other VLANs as an example.</p>
+
+<p>I own a Cloudflare domain that I use internally.
+All of my subdomains internal DNS records point to the IP of my Traefik instance, which the directs the request to the corresponding service.</p>
+
+<p><code class="language-plaintext highlighter-rouge">subdomain.maindomain.net -&gt; DNS -&gt; Traefik -&gt; Service</code></p>
+
+<p>The Cloud Gateway runs a WireGuard VPN server so that I can securely access services remotely.</p>
+
+<h3 id="proxmox-server">Proxmox Server</h3>
+<p>I run Proxmox on a Minisforum UN150P mini PC</p>
 <ul>
   <li>Intel N150</li>
   <li>16GB RAM</li>
@@ -86,7 +95,8 @@ such as Home assistant.</p>
   <li>4TB External drive</li>
 </ul>
 
-<p>I run Proxmox as my OS.</p>
+<p><img src="/assets/img/homelab-diag.png" alt="Diagram of my Homelab" />
+<em>An overview of my homelab</em></p>
 
 
 
