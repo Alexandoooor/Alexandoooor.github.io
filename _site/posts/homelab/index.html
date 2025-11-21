@@ -11,8 +11,8 @@
 <meta property="og:title" content="My Homelab" />
 <meta name="author" content="Alexander" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Homelab" />
-<meta property="og:description" content="Homelab" />
+<meta name="description" content="Homelab My Homelab is used, both as a lab, where I tinker and experiment, but it is also used to self-host sevices that I use in my everyday life, such as Home Assistant and Samba shares." />
+<meta property="og:description" content="Homelab My Homelab is used, both as a lab, where I tinker and experiment, but it is also used to self-host sevices that I use in my everyday life, such as Home Assistant and Samba shares." />
 <link rel="canonical" href="http://localhost:4000/posts/homelab/" />
 <meta property="og:url" content="http://localhost:4000/posts/homelab/" />
 <meta property="og:site_name" content="Alexander’s Portfolio" />
@@ -21,10 +21,10 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="My Homelab" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Alexander"},"dateModified":"2025-10-24T00:00:00+02:00","datePublished":"2025-10-24T00:00:00+02:00","description":"Homelab","headline":"My Homelab","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/homelab/"},"url":"http://localhost:4000/posts/homelab/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Alexander"},"dateModified":"2025-10-24T00:00:00+02:00","datePublished":"2025-10-24T00:00:00+02:00","description":"Homelab My Homelab is used, both as a lab, where I tinker and experiment, but it is also used to self-host sevices that I use in my everyday life, such as Home Assistant and Samba shares.","headline":"My Homelab","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/homelab/"},"url":"http://localhost:4000/posts/homelab/"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/style.css?v=684c9a686574d9e286b2b0816e35b9450fd9e169">
+    <link rel="stylesheet" href="/assets/css/style.css?v=da18f72c298afa7656f4e815159a66be57a0bf3d">
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
@@ -64,9 +64,8 @@
 <p class="view">by Alexander</p>
 
 <h3 id="homelab">Homelab</h3>
-
-<p>My Homelab is used, both as a lab, where I tinker and experiment.
-But it is also used to self-host sevices that I use in my everyday life,
+<p>My Homelab is used, both as a lab, where I tinker and experiment,
+but it is also used to self-host sevices that I use in my everyday life,
 such as Home Assistant and Samba shares.</p>
 
 <h2 id="setup">Setup</h2>
@@ -80,13 +79,28 @@ such as Home Assistant and Samba shares.</p>
 <p>My network is segmented into VLANs with strict firewall rules. Devices on the IoT network are not allowed to access devices on other VLANs as an example.</p>
 
 <p>I own a Cloudflare domain that I use internally.
-All of my subdomains internal DNS records point to the IP of my Traefik instance, which the directs the request to the corresponding service.</p>
+All of the internal DNS records for my subdomains point to the IP of my Traefik instance, which then directs the request to the corresponding service.</p>
 
 <p><code class="language-plaintext highlighter-rouge">subdomain.maindomain.net -&gt; DNS -&gt; Traefik -&gt; Service</code></p>
 
 <p>The Cloud Gateway runs a WireGuard VPN server so that I can securely access services remotely.</p>
 
+<p><img src="/assets/img/homelab-diag.png" alt="Diagram of my Homelab" />
+<em>An overview of my homelab</em></p>
+
 <h3 id="proxmox-server">Proxmox Server</h3>
+<p>Proxmox makes it easy to deploy containers and virtual machines for running services in my homelab.</p>
+
+<p>I currently self-host</p>
+<ul>
+  <li>Gitea</li>
+  <li>Gitea-mirror (mirrors github respositories to my gitea instance)</li>
+  <li>Traefik (for reverse proxy)</li>
+  <li>Vaultwarden (Self-hosted bitwarden server)</li>
+  <li>Home Assistant</li>
+  <li>Ubuntu LXC with Samba shares</li>
+</ul>
+
 <p>I run Proxmox on a Minisforum UN150P mini PC</p>
 <ul>
   <li>Intel N150</li>
@@ -95,8 +109,8 @@ All of my subdomains internal DNS records point to the IP of my Traefik instance
   <li>4TB External drive</li>
 </ul>
 
-<p><img src="/assets/img/homelab-diag.png" alt="Diagram of my Homelab" />
-<em>An overview of my homelab</em></p>
+<h3 id="deployment">Deployment</h3>
+<p>The <code class="language-plaintext highlighter-rouge">Telmate/proxmox</code>-provider makes it easy to use Terraform to deploy the containers (LXC) and virtual machines for my proxmox homelab.</p>
 
 
 
