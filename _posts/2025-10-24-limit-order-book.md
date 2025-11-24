@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Implenting a Limit Order Book in golang"
+title:  "Implementing a Limit Order Book in golang"
 author: Alexander
 tags: golang
 ---

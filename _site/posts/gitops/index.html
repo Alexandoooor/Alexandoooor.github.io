@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>GitOps with ArgoCD and Helm charts | Alexander’s Portfolio</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="GitOps with ArgoCD and Helm charts" />
+<meta name="author" content="Alexander" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Using GitOps in my Kubernetes cluster" />
+<meta property="og:description" content="Using GitOps in my Kubernetes cluster" />
+<link rel="canonical" href="http://localhost:4000/posts/gitops/" />
+<meta property="og:url" content="http://localhost:4000/posts/gitops/" />
+<meta property="og:site_name" content="Alexander’s Portfolio" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-11-24T00:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="GitOps with ArgoCD and Helm charts" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Alexander"},"dateModified":"2025-11-24T00:00:00+01:00","datePublished":"2025-11-24T00:00:00+01:00","description":"Using GitOps in my Kubernetes cluster","headline":"GitOps with ArgoCD and Helm charts","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/posts/gitops/"},"url":"http://localhost:4000/posts/gitops/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=7567aaa30a7b30cf4e6080662111fc3e871e3830">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="http://localhost:4000/">Alexander's Portfolio</a></h1>
+
+        
+
+        <p>A collection of my projects and thoughts!</p>
+
+        <ul>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/about">About me</a></li>
+            <li><a href="https://github.com/Alexandoooor">View My GitHub Profile</a></li>
+        </ul>
+
+      </header>
+      <section>
+
+      <small>24 November 2025</small>
+<h1>GitOps with ArgoCD and Helm charts</h1>
+
+<p class="view">by Alexander</p>
+
+<h3 id="using-gitops-in-my-kubernetes-cluster">Using GitOps in my Kubernetes cluster</h3>
+
+<p>In order to learn about Kubernetes I recently set up my own cluster from scratch,
+as documented in the previous post <em><a href="https://portfolio.alexandermagnusson.net/posts/k8s-from-scratch/">Kubernetes the hard way</a></em>.</p>
+
+<p>I used the cluster to deploy my own <a href="https://github.com/Alexandoooor/limit-order-book/tree/master">Limit order book</a> application.
+I started out by putting the manifest files in in a <code class="language-plaintext highlighter-rouge">/k8s</code> subdirectory in the application Github repository.</p>
+
+<p>My workflow was as follows.</p>
+
+<ol>
+  <li>Update the application</li>
+  <li>Create a tag in git and push it to GitHub</li>
+  <li>Pushing the tag to GitHub would trigger GitHub actions to build a docker image.</li>
+  <li>I would then manually run <code class="language-plaintext highlighter-rouge">kubectl set image deployments/limit-order-book limit-order-book=limit-order-book:&lt;NEW-TAG&gt;</code></li>
+</ol>
+
+<p>I wanted to automate this flow and make it work closer to how it would in a production environment.</p>
+
+<h3 id="templating-with-helm-charts">Templating with Helm charts</h3>
+
+<p>I started by converting my manifests into Helm charts.</p>
+
+<p>By creating templates for all my resources that all referenced a single values-file made it got easier to get an
+overview of the current state of my cluster. It also made it easier to switch between different versions of the application.</p>
+
+<h3 id="automated-deployments-with-argocd">Automated deployments with ArgoCD</h3>
+<p>After installing ArgoCD in my cluster I could add my application running the following command.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>argocd app create limit-order-book --repo https://github.com/Alexandoooor/limit-order-book-helm.git --path limit-order-book --dest-server https://kubernetes.default.svc --dest-namespace default
+</code></pre></div></div>
+
+<p>By setting the sync-policy to automated ArgoCD will automatically sync the application when it detects differences in the manifests in git.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>argocd app set limit-order-book --sync-policy automated
+</code></pre></div></div>
+
+<h3 id="secret-management">Secret management</h3>
+<p>There was one thing missing to get the automated deployments working, secrets. I needed both <code class="language-plaintext highlighter-rouge">imagePullSecrets</code> for getting the docker image from a private repository,
+as well as the password for the Postgres database.</p>
+
+<p>I had previously manually added the secrets after setting up the cluster. But this approach is the opposite of automation.
+I instead decided to use <a href="https://github.com/bitnami-labs/sealed-secrets">sealed secrets</a>.</p>
+
+<p>Sealed secrets works by installing a controller in the cluster. The controller has a public encryption key, which you use to encrypt a secret, the Postgres password for example.
+The result is a sealed (encrypted) secret which can be included in the Helm charts of the application.
+The sealed secrets controller is the only holder of the private key needed unencrypt (unseal) the secret so that it can be used as a regular Kubernetes secret.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create secret generic limit-order-book-postgres-secret \
+  --from-literal=ps_password=hunter2 \
+  --dry-run=client -o yaml &gt; secret.yaml
+</code></pre></div></div>
+
+<p>The above command outputs the <code class="language-plaintext highlighter-rouge">secret.yaml</code> with the content below.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: v1
+kind: Secret
+metadata:
+  name: limit-order-book-postgres-secret
+type: Opaque
+stringData:
+  ps_password: hunter2
+</code></pre></div></div>
+
+<p>Running kubeseal as follows uses the public key to encrypt the secret into <code class="language-plaintext highlighter-rouge">sealedsecret.yaml</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeseal --format yaml &lt; secret.yaml &gt; sealedsecret.yaml
+</code></pre></div></div>
+
+<p>The resulting <code class="language-plaintext highlighter-rouge">sealedsecrets.yaml</code> contains the encrypted secret which can safely be added to the git repository, since the controller is the only one holding the private key needed to unseal the secret.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: limit-order-book-postgres-secret
+  namespace: default
+spec:
+  encryptedData:
+    ps_password: AgByvKX3a...
+</code></pre></div></div>
+
+
+
+  <small>tags: <em>kubernetes</em> - <em>cloud</em></small>
+
+
+
+      </section>
+      <footer>
+        
+        <p><small>This project is maintained by <a href="https://github.com/Alexandoooor">Alexandoooor</a></small></p>
+        
+      </footer>
+    </div>
+    <script src="/assets/js/scale.fix.js"></script>
+  </body>
+</html>
