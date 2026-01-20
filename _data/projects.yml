@@ -1,0 +1,25 @@
+---
+- name: Open source contribution - Gerrit Trigger
+  url: https://github.com/jenkinsci/gerrit-trigger-plugin/pull/513
+  description: I found and submitted a fix for a bug in the gerrit trigger plugin for jenkins.
+  tags:
+    - Open source
+# - name: Project Alpha
+#   description: A minimal static site generator built with modern web standards. Features markdown support, live reload, and zero configuration.
+#   tags:
+#     - TypeScript
+#     - Node.js
+#     - Markdown
+#
+# - name: Terminal Theme
+#   description: A carefully crafted color scheme for terminals with excellent readability and aesthetic appeal. Available for iTerm2, Alacritty, and more.
+#   tags:
+#     - Design
+#     - CLI
+#
+# - name: API Client Library
+#   description: Type-safe API client with automatic retry logic, rate limiting, and comprehensive error handling. Built for reliability at scale.
+#   tags:
+#     - TypeScript
+#     - API
+#     - Open Source

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes the hard way - Alexander Magnusson</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="/">Alexander Magnusson</a></h1>
+            <p class="subtitle">Software Engineer</p>
+            <nav>
+                <a href="/posts">Posts</a>
+                <a href="/about">About</a>
+                <a href="mailto:magnusson.alex@gmail.com">Contact</a>
+            </nav>
+        </header>
+
+        <main>
+            <article class="post-content">
+    <div class="post-header">
+        <div class="post-date">October 29, 2025</div>
+        <h1>Kubernetes the hard way</h1>
+    </div>
+
+    <h3 id="setting-up-k8s-from-scratch">Setting up k8s from scratch</h3>
+
+<p>In order to learn more about kubernetes I decided to set up a cluster from scratch.
+The goal is to have a working cluster that I can deploy my <a href="https://github.com/Alexandoooor/limit-order-book">Limit Order Book</a> in.</p>
+
+<p>I found the tutorial series <em><a href="https://support.tools/training/rke2-hard-way/01-introduction-prerequisites/">RKE2 the Hard Way</a></em> that guides you through setting up a
+Kubernetes cluster with features similar to Rancher Kubernetes Engine 2 (<a href="https://docs.rke2.io">RKE2</a>).</p>
+
+<p>To further spice things up I decided to use Digital Ocean Droplets as the VMs hosting my nodes.
+This meant that I couldn’t just blindly copy-paste the commands from the tutorial, I actually had to do some manual intervention
+in order to get it working. ;)</p>
+
+<p>Regardless of my choice to host it on Digital Ocean it there were some issues with the steps in the tutorial that I had to figure out.</p>
+
+<h3 id="issues">Issues</h3>
+
+<h4 id="certificates">Certificates</h4>
+<p>Step 4 in <a href="https://support.tools/training/rke2-hard-way/02-certificate-authority-tls-certificates/">Part 2 – Certificate Authority and TLS Certificates</a>
+you are instructed to create the Kubernetes API server certificate request file as follows:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat &gt; kubernetes-csr.json &lt;&lt; EOF
+{
+  "CN": "kubernetes",
+  "hosts": [
+    "127.0.0.1",
+    "kubernetes",
+    "kubernetes.default",
+    "kubernetes.default.svc",
+    "kubernetes.default.svc.cluster",
+    "kubernetes.default.svc.cluster.local",
+    "${NODE1_IP}",
+    "${NODE2_IP}",
+    "${NODE3_IP}",
+    "node01",
+    "node02",
+    "node03"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "US",
+      "L": "Rancher",
+      "O": "SupportTools",
+      "OU": "Kubernetes The Hard Way",
+      "ST": "SUSE"
+    }
+  ]
+}
+EOF
+</code></pre></div></div>
+
+<p>This CSR is then used to create a certificate:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cfssl gencert \
+  -profile=kubernetes \
+  -ca=ca.pem \
+  -ca-key=ca-key.pem \
+  -config=ca-config.json \
+  -hostname="127.0.0.1,kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.default.svc.cluster.local,${NODE1_IP},${NODE2_IP},${NODE3_IP},node01,node02,node03" \
+  kubernetes-csr.json | cfssljson -bare kubernetes
+</code></pre></div></div>
+
+<h4 id="networking">Networking</h4>
+<p>At first I used the public IP addresses of the nodes. But I seemed to run into issues regarding firewall rules.</p>
+
+<p>I later found out that Digital Ocean has something called <a href="https://docs.digitalocean.com/products/networking/vpc/">Virtual Private Clouds</a> or VPCs.</p>
+<blockquote>
+  <p>A Virtual Private Cloud (VPC) is a private network interface for collections of DigitalOcean resources. VPC networks are inaccessible from the public internet and other VPC networks, and traffic on them doesn’t count against bandwidth usage. You can link VPC networks to each other using VPC peering connections.</p>
+</blockquote>
+
+<p>It turns out that all of my VMs were connected to a VPC with “private” IP addresses in the <code class="language-plaintext highlighter-rouge">10.110.0.0/20</code> range.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Private IPs
+10.110.0.3    node01
+10.110.0.2    node02
+10.110.0.4    node03
+</code></pre></div></div>
+
+<p>Switching to the private IP addresses did not solve all of my problems though.</p>
+
+<p>In <a href="https://support.tools/training/rke2-hard-way/08-installing-cilium-cni/">Part 8 – Installing Cilium CNI</a> you are instructed to test the networking between pods as below</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Create a test namespace
+kubectl create ns cilium-test
+
+# Launch test pods
+kubectl run ping-a --image=busybox -n cilium-test -- sleep 3600
+kubectl run ping-b --image=busybox -n cilium-test -- sleep 3600
+
+# Wait for pods to become ready
+kubectl wait --for=condition=Ready pod/ping-a -n cilium-test
+kubectl wait --for=condition=Ready pod/ping-b -n cilium-test
+
+# Get the IP of ping-b
+PING_B_IP=$(kubectl get pod ping-b -n cilium-test -o jsonpath='{.status.podIP}')
+
+# Have ping-a ping ping-b
+kubectl exec -n cilium-test ping-a -- ping -c 5 $PING_B_IP
+</code></pre></div></div>
+
+<p>Sometimes it would work and at other times it would not. This took quite a while to figure out.
+After lots of debugging I learned that it would work when Kubernetes would schedule both pods, <code class="language-plaintext highlighter-rouge">ping-a</code> and <code class="language-plaintext highlighter-rouge">ping-b</code>, on the same node.
+If Kubernetes scheduled them on different nodes pinging would fail.</p>
+
+<h4 id="missing-routes">Missing routes</h4>
+<p>I found out that my CNI-plugin of choice, <a href="https://cilium.io/">Cilium</a> did not add routes between the nodes. This meant that pods could only communicate if they were on the same node.
+<em>(Caveat: there is absolutely a possibility that I might have misunderstood how to properly configure Cilium).</em> The way I managed to fix the issue was by manually adding routes between the nodes.</p>
+
+<p>Each node had a PodCIDR as follows <code class="language-plaintext highlighter-rouge">10.42.x.0/16</code> where <code class="language-plaintext highlighter-rouge">x is in {0,1,2}</code>.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node01 10.42.0.0/16
+node02 10.42.1.0/16
+node03 10.42.2.0/16
+</code></pre></div></div>
+
+<p>For each node I added routes for the for each of the PodCIDRs <code class="language-plaintext highlighter-rouge">x</code> via the respective private IP address <code class="language-plaintext highlighter-rouge">y</code>.
+I.e for <code class="language-plaintext highlighter-rouge">node01</code> I added routes for the subnets of <code class="language-plaintext highlighter-rouge">node02</code>, <code class="language-plaintext highlighter-rouge">node03</code> via their respective private IP addresses.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Adding route to PodCIDR x via IP y
+ip route add 10.42.x.0/24 via 10.110.0.y
+</code></pre></div></div>
+
+<p>Example for <code class="language-plaintext highlighter-rouge">node01</code>.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Routes for node01 to node02 and node03
+10.42.1.0/24 via 10.110.0.2 dev eth1
+10.42.2.0/24 via 10.110.0.4 dev eth1
+</code></pre></div></div>
+
+<p>Adding the respective routes for all nodes as above. Resolves the issue and allows pods to communicate with pods on other nodes.</p>
+
+<p>Finally! All is good now right? No not quite?</p>
+
+<h4 id="certificate-issues">Certificate issues</h4>
+<p>The next step after getting the networking between pods running is to setup DNS in the cluster.</p>
+<blockquote>
+  <p>DNS resolution is critical in a Kubernetes cluster because:</p>
+  <ul>
+    <li>It enables services to be discovered by their names rather than IP addresses</li>
+    <li>It allows pods to find and communicate with other pods and services</li>
+    <li>It provides a stable naming scheme even when IPs change due to pod rescheduling</li>
+  </ul>
+</blockquote>
+
+<p>CoreDNS runs a service <code class="language-plaintext highlighter-rouge">kube-dns</code>. In the tutorial cluster services are allocated IP addresses in the range <code class="language-plaintext highlighter-rouge">10.43.0.0/16</code>, aka the ServiceCIDR
+But since the CSR is missing an entry for the Kubernetes ClusterIP (<code class="language-plaintext highlighter-rouge">10.43.0.1</code>) I would encouter connection errors.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[INFO] plugin/ready: Still waiting on: "kubernetes"
+[WARNING] plugin/kubernetes: Kubernetes API connection failure: \
+Get "https://10.43.0.1:443/version": \
+tls: failed to verify certificate: x509: certificate is valid for ... not 10.43.0.1
+</code></pre></div></div>
+
+<p>To solve this I had to go back to the Kubernetes API server certificate request file, <code class="language-plaintext highlighter-rouge">kubernetes-csr.json</code> adding <code class="language-plaintext highlighter-rouge">10.43.0.1</code> and then regenerate the certificates.</p>
+
+<h4 id="working-cluster">Working cluster</h4>
+<p>I finally had a working Kubernetes cluster!
+I deployed my Limit Order Book application in the cluster and added an ingress in order to be able to access it externally.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME                       CLASS   HOSTS                    ADDRESS          PORTS   AGE
+limit-order-book-ingress   nginx   limit-order-book.local   &lt;PUBLIC-IP&gt;      80      12m
+</code></pre></div></div>
+
+<p>The next step was adding the public IP adress and the ingress hostname to my local computers <code class="language-plaintext highlighter-rouge">/etc/hosts</code></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#/etc/hosts
+&lt;PUBLIC-IP&gt; limit-order-book.local
+</code></pre></div></div>
+
+<p>Et voilà, the Limit Order Book is now accessible from my local computer.</p>
+
+<p><img src="/assets/img/LimitOrderBookK8S.png" alt="Limit Order Book" /></p>
+
+<h4 id="summary">Summary</h4>
+<p>This was a fun (and at times frustrating) project. It was very satisfactory finally getting all of the pieces working together.
+I really enjoyed the process of setting up a kubernetes cluster from scratch, learning about all of the individual components and how they interact.
+It was the right amount of challenging in order to not get discouraged while still learning, rather than just blindly copy-pasting commands.</p>
+
+<p>One of the trickier bits was that there were multiple issues at the same time, both regarding certificates and networking between pods and nodes.
+Especially since the pod-to-pod networking errors depended on node scheduling and would only show up sporadically.</p>
+
+<p>I also enjoyed getting to play around with Digital Ocean Droplets.
+In a production scenario you would use a managed Kubernetes service, but this was a great learning setup.</p>
+
+</article>
+
+<div class="post-nav">
+    
+    <a href="/2025/10/24/limit-order-book/" class="prev">← Implementing a Limit Order Book in golang</a>
+    
+    
+    <a href="/2025/11/24/gitops/" class="next">GitOps with ArgoCD and Helm charts →</a>
+    
+</div>
+
+        </main>
+
+        <footer>
+            <div class="social-links">
+                
+                <a href="https://github.com/Alexandoooor">GitHub</a>
+                
+                
+            </div>
+            <p>&copy; 2026 Alexander Magnusson. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

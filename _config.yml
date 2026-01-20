@@ -1,7 +1,27 @@
 ---
-theme: jekyll-theme-minimal
-title: Alexander's Portfolio
-description: A collection of my projects and thoughts!
-show_downloads: false
+## _config.yml
+title: Alexander Magnusson
+description: Software Engineer
+url: https://portfolio.alexandermagnusson.net
+baseurl: ""
 
-permalink: /posts/:title/
+# Author
+author:
+  name: Alexander Magnusson
+  email: magnusson.alex@gmail.com
+  github: Alexandoooor
+
+# Build settings
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
+
+# Collections
+collections:
+  projects:
+    output: false
+
+# Exclude
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

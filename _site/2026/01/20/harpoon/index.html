@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>harpoon.zsh - quick access hooks for directories - Alexander Magnusson</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="/">Alexander Magnusson</a></h1>
+            <p class="subtitle">Software Engineer</p>
+            <nav>
+                <a href="/posts">Posts</a>
+                <a href="/about">About</a>
+                <a href="mailto:magnusson.alex@gmail.com">Contact</a>
+            </nav>
+        </header>
+
+        <main>
+            <article class="post-content">
+    <div class="post-header">
+        <div class="post-date">January 20, 2026</div>
+        <h1>harpoon.zsh - quick access hooks for directories</h1>
+    </div>
+
+    <p><a href="https://github.com/Alexandoooor/harpoon">harpoon.zsh</a> is a small zsh script that allows hooking paths to aliases
+in order to be able to quickly jump between them.</p>
+
+<p>I find this useful as I often encounter situations in my workflow where I jump back and forth between a few directories.
+Hooking these directories to short aliases is much easier than having to remember and reference the full path of each directory when running <code class="language-plaintext highlighter-rouge">cd</code>.</p>
+
+<p>When attaching a hook, the script associates a given name with the path of the current working directory,
+which is saved to a file. This name can then be referenced to quickly jump to the corresponding path.</p>
+
+<h3 id="harpoon-usage">Harpoon usage</h3>
+
+<h4 id="commands">Commands:</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hook &lt;name&gt;         add a hook &lt;name&gt; for the current directory
+jump &lt;name&gt;         cd to the directory referenced by &lt;name&gt;
+unhook &lt;name&gt;       remove hook &lt;name&gt;
+hooks               list current hooks
+harpoon             print this message
+</code></pre></div></div>
+
+<h4 id="example-usage">Example usage:</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~/projects/myapp
+hook app
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~
+jump app  # instantly back to ~/projects/myapp
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hooks     # list all hooks
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unhook app # remove the hook
+</code></pre></div></div>
+
+</article>
+
+<div class="post-nav">
+    
+    <a href="/2025/11/24/gitops/" class="prev">← GitOps with ArgoCD and Helm charts</a>
+    
+    
+</div>
+
+        </main>
+
+        <footer>
+            <div class="social-links">
+                
+                <a href="https://github.com/Alexandoooor">GitHub</a>
+                
+                
+            </div>
+            <p>&copy; 2026 Alexander Magnusson. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

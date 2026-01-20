@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Homelab - Alexander Magnusson</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="/">Alexander Magnusson</a></h1>
+            <p class="subtitle">Software Engineer</p>
+            <nav>
+                <a href="/posts">Posts</a>
+                <a href="/about">About</a>
+                <a href="mailto:magnusson.alex@gmail.com">Contact</a>
+            </nav>
+        </header>
+
+        <main>
+            <article class="post-content">
+    <div class="post-header">
+        <div class="post-date">October 24, 2025</div>
+        <h1>My Homelab</h1>
+    </div>
+
+    <h3 id="homelab">Homelab</h3>
+<p>My Homelab is used, both as a lab, where I tinker and experiment,
+but it is also used to self-host sevices that I use in my everyday life,
+such as Home Assistant and Samba shares.</p>
+
+<h2 id="setup">Setup</h2>
+<h3 id="networking">Networking</h3>
+<ul>
+  <li>Unifi Cloud Gateway Ultra</li>
+  <li>Unifi Switch Ultra PoE</li>
+  <li>Unifi U6</li>
+</ul>
+
+<p>My network is segmented into VLANs with strict firewall rules. Devices on the IoT network are not allowed to access devices on other VLANs as an example.</p>
+
+<p>I own a Cloudflare domain that I use internally.
+All of the internal DNS records for my subdomains point to the IP of my Traefik instance, which then directs the request to the corresponding service.</p>
+
+<p><code class="language-plaintext highlighter-rouge">subdomain.maindomain.net -&gt; DNS -&gt; Traefik -&gt; Service</code></p>
+
+<p>The Cloud Gateway runs a WireGuard VPN server so that I can securely access services remotely.</p>
+
+<p><img src="/assets/img/homelab-diag.png" alt="Diagram of my Homelab" />
+<em>An overview of my homelab</em></p>
+
+<h3 id="proxmox-server">Proxmox Server</h3>
+<p>Proxmox makes it easy to deploy containers and virtual machines for running services in my homelab.</p>
+
+<p>I currently self-host</p>
+<ul>
+  <li>Gitea</li>
+  <li>Gitea-mirror (mirrors github respositories to my gitea instance)</li>
+  <li>Traefik (for reverse proxy)</li>
+  <li>Vaultwarden (Self-hosted bitwarden server)</li>
+  <li>Home Assistant</li>
+  <li>Ubuntu LXC with Samba shares</li>
+</ul>
+
+<p>I run Proxmox on a Minisforum UN150P mini PC</p>
+<ul>
+  <li>Intel N150</li>
+  <li>16GB RAM</li>
+  <li>512GB SSD</li>
+  <li>4TB External drive</li>
+</ul>
+
+<h3 id="deployment">Deployment</h3>
+<p>The <code class="language-plaintext highlighter-rouge">Telmate/proxmox</code>-provider makes it easy to use Terraform to deploy the containers (LXC) and virtual machines for my proxmox homelab.</p>
+
+</article>
+
+<div class="post-nav">
+    
+    
+    <a href="/2025/10/24/limit-order-book/" class="next">Implementing a Limit Order Book in golang →</a>
+    
+</div>
+
+        </main>
+
+        <footer>
+            <div class="social-links">
+                
+                <a href="https://github.com/Alexandoooor">GitHub</a>
+                
+                
+            </div>
+            <p>&copy; 2026 Alexander Magnusson. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
