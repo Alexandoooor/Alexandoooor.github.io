@@ -317,6 +317,16 @@ h2 a:hover {
     margin-bottom: 0.5rem;
 }
 
+.project-title a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.project-title a:hover {
+    color: var(--accent);
+}
+
 .project-desc {
     color: var(--text-secondary);
     margin-bottom: 1rem;

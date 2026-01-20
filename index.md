@@ -20,7 +20,11 @@ layout: default
 <div class="projects">
 {% for project in site.data.projects %}
   <div class="project-card">
-    <h2 class="project-title"><a href="{{ project.url }}">{{ project.name }}</a></h2>
+    {% if project.url %}
+    <div class="project-title"><a href="{{ project.url }}">{{ project.name }}</a></div>
+    {% else %}
+    <div class="project-title">{{ project.name }}</div>
+    {% endif %}
     <p class="project-desc">{{ project.description }}</p>
     <div class="project-tags">
       {% for tag in project.tags %}
