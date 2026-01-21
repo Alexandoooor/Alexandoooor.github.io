@@ -14,7 +14,7 @@ author:
 
 # Build settings
 markdown: kramdown
-permalink: /:year/:month/:day/:title/
+permalink: /posts/:title/
 
 # Collections
 collections:
