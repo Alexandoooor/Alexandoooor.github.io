@@ -48,6 +48,16 @@ header {
     padding: 4rem 0 3rem;
     border-bottom: 1px solid var(--border);
     margin-bottom: 3rem;
+    position: relative;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 120px;
+    height: 3px;
 }
 
 header h1 {
@@ -105,10 +115,15 @@ nav a:hover::after {
 
 article {
     transition: transform 0.2s ease;
+    position: relative;
+    padding-left: 1rem;
+    border-left: 2px solid transparent;
+    transition: all 0.2s ease;
 }
 
 article:hover {
     transform: translateX(4px);
+    border-left-color: var(--accent);
 }
 
 .post-date {
@@ -158,6 +173,17 @@ h2 a:hover {
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border);
+    position: relative;
+}
+
+.post-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--accent);
 }
 
 .post-content h1 {
@@ -267,16 +293,30 @@ h2 a:hover {
     padding-top: 2rem;
     border-top: 1px solid var(--border);
     margin-bottom: 3rem;
+    gap: 1rem;
 }
 
 .post-nav a {
     color: var(--text-secondary);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg);
 }
 
 .post-nav a:hover {
     color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 102, 204, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+    .post-nav a:hover {
+        box-shadow: 0 4px 8px rgba(77, 159, 255, 0.15);
+    }
 }
 
 .post-nav .next {
@@ -360,6 +400,17 @@ footer {
     color: var(--text-secondary);
     text-align: center;
     font-size: 0.875rem;
+    position: relative;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
 }
 
 .social-links {
@@ -372,11 +423,30 @@ footer {
 .social-links a {
     color: var(--text-secondary);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    position: relative;
 }
 
 .social-links a:hover {
     color: var(--accent);
+}
+
+.social-links a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.2s ease;
+}
+
+.social-links a:hover::before {
+    width: 80%;
 }
 
 @media (max-width: 640px) {
@@ -399,6 +469,125 @@ footer {
     .post-content h1 {
         font-size: 1.75rem;
     }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* About page styling */
+.about-page h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--success) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.about-page h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    letter-spacing: -0.01em;
+    position: relative;
+    padding-bottom: 0.75rem;
+}
+
+.about-page h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--accent);
+}
+
+.about-page p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.skill-item {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: var(--bg);
+}
+
+.skill-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 102, 204, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+    .skill-item:hover {
+        box-shadow: 0 8px 16px rgba(77, 159, 255, 0.15);
+    }
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.skill-tag {
+    padding: 0.25rem 0.65rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.skill-item:hover .skill-tag {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.skill-icon {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 8px;
+    letter-spacing: -0.02em;
+}
+
+.skill-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.skill-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
 }
 
 /* General list styling for all pages */
