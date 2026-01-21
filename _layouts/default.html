@@ -14,6 +14,7 @@
             <nav>
                 <a href="{{ '/posts' | relative_url }}">Posts</a>
                 <a href="{{ '/about' | relative_url }}">About</a>
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/{{ site.author.github }}">GitHub</a>
                 <a href="mailto:{{ site.author.email }}">Contact</a>
             </nav>
         </header>
@@ -25,10 +26,10 @@
         <footer>
             <div class="social-links">
                 {% if site.author.github %}
-                <a href="https://github.com/{{ site.author.github }}">GitHub</a>
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/{{ site.author.github }}">GitHub</a>
                 {% endif %}
                 {% if site.author.linkedin %}
-                <a href="https://linkedin.com/in/{{ site.author.linkedin }}">LinkedIn</a>
+                <a target="_blank" rel="noopener noreferrer" href="https://linkedin.com/in/{{ site.author.linkedin }}">LinkedIn</a>
                 {% endif %}
             </div>
             <p>&copy; {{ 'now' | date: "%Y" }} {{ site.author.name }}. All rights reserved.</p>

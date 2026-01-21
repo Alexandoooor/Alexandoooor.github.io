@@ -7,9 +7,7 @@ title: About
 
 # About Me
 
-Write your bio here. This is a great place to talk about your background, interests, and what you're currently working on.
-
-You can write multiple paragraphs to tell your story. Talk about what drives you, what you're passionate about, and what you're currently focused on.
+I have a MSc in Computer Science & Engineering from LTH. In my spare time I enjoy hobby programming and tinkering with my homelab.
 
 ## Skills
 
@@ -38,6 +36,8 @@ You can write multiple paragraphs to tell your story. Talk about what drives you
         <span class="skill-tag">Jenkins</span>
         <span class="skill-tag">Bash</span>
         <span class="skill-tag">Linux</span>
+        <span class="skill-tag">Proxmox</span>
+        <span class="skill-tag">Azure</span>
     </div>
   </div>
 

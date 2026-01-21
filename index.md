@@ -2,7 +2,7 @@
 layout: default
 ---
 
-## Recent Posts
+<div class="about-page" markdown="1"> <h1>Recent Posts</h1></div>
 
 <div class="posts">
 {% for post in site.posts limit:3 %}
@@ -14,14 +14,18 @@ layout: default
 {% endfor %}
 </div>
 
+<div class="view-all-posts">
+  <a href="{{ '/posts' | relative_url }}" class="btn-view-all">View All Posts</a>
+</div>
 
-## Projects
+
+<div class="about-page" markdown="1"> <h1>Projects</h1></div>
 
 <div class="projects">
 {% for project in site.data.projects %}
   <div class="project-card">
     {% if project.url %}
-    <div class="project-title"><a href="{{ project.url }}">{{ project.name }}</a></div>
+    <div class="project-title"><a target="_blank" rel="noopener noreferrer" href="{{ project.url }}">{{ project.name }}</a></div>
     {% else %}
     <div class="project-title">{{ project.name }}</div>
     {% endif %}

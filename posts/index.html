@@ -1,0 +1,34 @@
+---
+layout: default
+title: All Posts
+---
+
+<div class="about-page" markdown="1"> <h1>All Posts</h1></div>
+
+<div class="posts">
+{% for post in paginator.posts %}
+  <article>
+    <div class="post-date">{{ post.date | date: "%B %d, %Y" }}</div>
+    <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+    <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 40 }}</p>
+  </article>
+{% endfor %}
+</div>
+
+{% if paginator.total_pages > 1 %}
+<div class="pagination">
+  {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path | relative_url }}" class="pagination-btn">← Previous</a>
+  {% else %}
+    <span class="pagination-btn disabled">← Previous</span>
+  {% endif %}
+
+  <span class="pagination-info">Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
+
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path | relative_url }}" class="pagination-btn">Next →</a>
+  {% else %}
+    <span class="pagination-btn disabled">Next →</span>
+  {% endif %}
+</div>
+{% endif %}
