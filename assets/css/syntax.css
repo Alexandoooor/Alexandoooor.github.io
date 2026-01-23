@@ -1,0 +1,161 @@
+/* Tokyo Night inspired theme for Rouge */
+
+.highlight {
+  background: #1a1b26;
+  color: #c0caf5;
+}
+
+.highlight pre {
+  background: #1a1b26;
+  padding: 1em;
+  overflow-x: auto;
+}
+
+.highlight .hll { background-color: #292e42 }
+
+/* Comments */
+.highlight .c,
+.highlight .ch,
+.highlight .cm,
+.highlight .cp,
+.highlight .cpf,
+.highlight .c1,
+.highlight .cs {
+  color: #565f89;
+  font-style: italic;
+}
+
+/* Preprocessor (C/C++) */
+.highlight .cp {
+  color: #bb9af7;   /* Same as keywords */
+  font-style: normal;
+}
+
+/* Keywords */
+.highlight .k,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt {
+  color: #bb9af7;
+}
+
+/* Strings */
+.highlight .s,
+.highlight .sa,
+.highlight .sb,
+.highlight .sc,
+.highlight .dl,
+.highlight .sd,
+.highlight .s2,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .sr,
+.highlight .s1,
+.highlight .ss {
+  color: #9ece6a;
+}
+
+/* Numbers */
+.highlight .m,
+.highlight .mb,
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .il,
+.highlight .mo {
+  color: #ff9e64;
+}
+
+/* Functions / Names */
+.highlight .nf,
+.highlight .fm {
+  color: #7aa2f7;
+}
+
+/* Classes / Types */
+.highlight .nc,
+.highlight .nn,
+.highlight .ne,
+.highlight .nt {
+  color: #2ac3de;
+}
+
+/* Variables */
+.highlight .vi,
+.highlight .vm,
+.highlight .vg {
+  color: #c0caf5;
+}
+
+/* Operators */
+.highlight .o,
+.highlight .ow {
+  color: #89ddff;
+}
+
+/* Errors */
+.highl
+
+/* ========================= */
+/* Bash / Shell (Rouge)    */
+/* ========================= */
+
+/* Builtins / Keywords (cd, if, then, fi, for, in, do, done, exit, export) */
+.highlight .nb,
+.highlight .k {
+  color: #bb9af7; /* Purple */
+  font-weight: 600;
+}
+
+/* Commands (ls, git, echo, make, grep) */
+.highlight .nv,
+.highlight .nx {
+  color: #7aa2f7; /* Blue */
+}
+
+/* Variables ($HOME, $PATH, ${VAR}) */
+.highlight .vg,
+.highlight .vi,
+.highlight .vm {
+  color: #c0caf5;
+}
+
+/* Strings */
+.highlight .s,
+.highlight .s1,
+.highlight .s2 {
+  color: #9ece6a;
+}
+
+/* Numbers */
+.highlight .m {
+  color: #ff9e64;
+}
+
+/* Operators / Pipes / Redirects (|, >, &&, ||) */
+.highlight .o {
+  color: #89ddff;
+}
+
+/* Flags / Options (-la, --help) */
+.highlight .na {
+  color: #2ac3de;
+}
+
+/* Comments (# this is a comment) */
+.highlight .c,
+.highlight .c1 {
+  color: #565f89;
+  font-style: italic;
+}
+
+/* Prompt ($, # at line start) */
+.highlight .gp {
+  color: #f7768e;
+  font-weight: bold;
+}

@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>harpoon.zsh - quick access hooks for directories - Alexander Magnusson</title>
     <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/syntax.css">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
 </head>
 <body>
     <div class="container">
@@ -22,7 +24,7 @@
             </nav>
         </header>
 
-        <main>
+        <main class="content">
             <article class="post-content">
     <div class="post-header">
         <div class="post-date">January 20, 2026</div>
@@ -42,31 +44,33 @@ which is saved to a file. This name can then be referenced to quickly jump to th
 
 <h4 id="commands">Commands:</h4>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hook &lt;name&gt;         add a hook &lt;name&gt; for the current directory
-jump &lt;name&gt;         cd to the directory referenced by &lt;name&gt;
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hook &lt;name&gt;         add a hook &lt;name&gt; to the current directory
+jump &lt;name&gt;         <span class="nb">cd </span>to the directory referenced by &lt;name&gt;
 unhook &lt;name&gt;       remove hook &lt;name&gt;
 hooks               list current hooks
 harpoon             print this message
 </code></pre></div></div>
-
 <h4 id="example-usage">Example usage:</h4>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~/projects/myapp
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/projects/myapp
 hook app
 </code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~
-jump app  # instantly back to ~/projects/myapp
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~
+jump app  <span class="c"># instantly back to ~/projects/myapp</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hooks     # list all hooks
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hooks     <span class="c"># list all hooks</span>
 </code></pre></div></div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unhook app # remove the hook
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unhook app <span class="c"># remove the hook</span>
 </code></pre></div></div>
 
 </article>
 
 <div class="post-nav">
+    
+    <a href="/posts/custom-qmk-firmware/" class="next">← Rolling custom QMK firmware for my Keychron keyboard</a>
     
     
     <a href="/posts/gitops/" class="prev">GitOps with ArgoCD and Helm charts →</a>

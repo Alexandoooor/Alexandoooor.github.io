@@ -7,13 +7,13 @@ tags: golang
 
 ## What is a Limit Order Book?
 
-From the Wikipedia article on [Order Books](https://en.wikipedia.org/wiki/Order_book).
+From the Wikipedia article on [Order Books](https://en.wikipedia.org/wiki/Order_book):
 >An order book is the list of orders (manual or electronic) that a trading venue (in particular stock exchanges) uses to record the interest of buyers and sellers in a particular financial instrument. A matching engine uses the book to determine which orders can be fully or partially executed.
 
-A *Limit* Order Book is an order book that is comprised of [Limit orders](https://en.wikipedia.org/wiki/Order_(exchange)#Limit_order).
+A *Limit* Order Book is an order book that is comprised of [Limit orders](https://en.wikipedia.org/wiki/Order_(exchange)#Limit_order):
 >A limit order is an order to buy a security at no more than a specific price, or to sell a security at no less than a specific price (called "or better" for either direction). This gives the trader (customer) control over the price at which the trade is executed; however, the order may never be executed ("filled"). Limit orders are used when the trader wishes to control price rather than certainty of execution.
 
-Another important concept is [Price Levels](https://en.wikipedia.org/wiki/Order_book)
+Another important concept is [Price Levels](https://en.wikipedia.org/wiki/Order_book):
 >When several orders contain the same price, they are referred to as being on a price level. Practically, this means that if a bid comes at that price level, all the sell orders on that price level could potentially fulfill that.
 
 ![Example of a real Order Book](/assets/img/ExampleRealBook.png)
@@ -71,7 +71,7 @@ type Level struct {
 ```
 
 #### Example: Traversing multiple levels
-Imagine that this is the ask side of an order book.
+Imagine that this is the ask side of an order book:
 
 | amount       | price |
 |:-------------|:------|

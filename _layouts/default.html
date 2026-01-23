@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/syntax.css' | relative_url }}">
     <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
+
 </head>
 <body>
     <div class="container">
@@ -22,7 +24,7 @@
             </nav>
         </header>
 
-        <main>
+        <main class="content">
             {{ content }}
         </main>
 

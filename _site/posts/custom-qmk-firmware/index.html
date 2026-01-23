@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolling custom QMK firmware for my Keychron keyboard - Alexander Magnusson</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/syntax.css">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="/">Alexander Magnusson</a></h1>
+            <p class="subtitle">Software Engineer</p>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/posts">Posts</a>
+                <a href="/about">About</a>
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/Alexandoooor">GitHub</a>
+                <a href="mailto:magnusson.alex@gmail.com">Contact</a>
+            </nav>
+        </header>
+
+        <main class="content">
+            <article class="post-content">
+    <div class="post-header">
+        <div class="post-date">January 23, 2026</div>
+        <h1>Rolling custom QMK firmware for my Keychron keyboard</h1>
+    </div>
+
+    <p>I’m using a Keychron Q1 Max as my preferred keyboard. It is a really nice keyboard.
+It’s built like a tank, it feels nice to type on and it is wireless with 1000 Hz polling rate,
+while maintaining great battery-life.</p>
+
+<p>But one of the best features is that is uses <a href="https://qmk.fm">QMK</a> firmware:</p>
+<blockquote>
+  <p>QMK Firmware: Open-source keyboard firmware for Atmel AVR and Arm USB families.</p>
+</blockquote>
+
+<h3 id="why-the-need-for-qmk">Why the need for QMK?</h3>
+<p>One thing that I do on every computer that I use is to rebind <code class="language-plaintext highlighter-rouge">caps</code> to act as <code class="language-plaintext highlighter-rouge">esc</code> on tap and <code class="language-plaintext highlighter-rouge">ctrl</code> on hold.
+One option is to do it on a software-level, But that works differently on every OS and sometimes requires installing third-party software.
+Another potential problem is that remote machines might not recognize the host machine-rebinds either, which can be annoying if you’re often using VMs.</p>
+
+<p>Remember, QMK is the firmware running the keyboard. This means that you won’t have to figure out how to rebind keys on each computer that you use, your keyboard will work in the same way on any computer.</p>
+
+<p>QMK allows you to configure a key with a key-type called <a href="https://docs.qmk.fm/mod_tap">Mod-Tap key</a>.</p>
+<blockquote>
+  <p>The Mod-Tap key MT(mod, kc) acts like a modifier when held, and a regular keycode when tapped. In other words, you can have a key that sends Escape when you tap it, but functions as a Control or Shift key when you hold it down.</p>
+</blockquote>
+
+<p>Binding <code class="language-plaintext highlighter-rouge">caps</code> to <code class="language-plaintext highlighter-rouge">MT(MOD_LCTL, KC_ESC)</code> does exactly what I want! This modification can even be done in the Keychron Launcher which is a web application that allows you to use a GUI to customize your keyboard. Easy peasy, right?</p>
+
+<h3 id="why-the-need-to-roll-custom-firmware-then">Why the need to roll custom firmware then?</h3>
+<p>Well the Keychron Launcher also allows you to install the latest firmware updates provided by Keychron. Diligent as I am, I decided to flash the latest available firmware.</p>
+
+<p><em>This turned out to be a mistake.</em></p>
+
+<p>After flashing the updated firmware the timing deciding whether an action is a <code class="language-plaintext highlighter-rouge">tap</code> or a <code class="language-plaintext highlighter-rouge">hold</code>.
+This caused me to constantly make mistakes. Most commonly when cycling between <code class="language-plaintext highlighter-rouge">tmux</code>-panes using <code class="language-plaintext highlighter-rouge">ctrl-A p/n</code> (previous and next pane respectively).
+This was incredibly annoying.</p>
+
+<h3 id="rolling-custom-firmware">Rolling custom firmware</h3>
+<p>After some research, I found that the QMK documentation has a page on <a href="https://docs.qmk.fm/tap_hold#tap-or-hold-decision-modes">Tap-Hold Configuration Options</a>.
+There is the <a href="https://docs.qmk.fm/tap_hold#tapping-term">tapping-term</a>-option, which controls how long you need to hold the key before it is interpeted as a <code class="language-plaintext highlighter-rouge">hold</code>. There is also an option for different <a href="https://docs.qmk.fm/tap_hold#tap-or-hold-decision-modes">Tap-Or-Hold Decision Modes</a>.</p>
+
+<p>Keychron has a public <a href="https://github.com/Keychron/qmk_firmware/tree/wireless_playground">repository</a> of their QMK-fork, which includes firmware for my keyboard, the Keychron Q1 Max.</p>
+
+<p>I could it up for use with the QMK-cli by running the following command:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qmk setup <span class="nt">-H</span> ~/qmk_firmware <span class="nt">-b</span> wireless_playground Keychron/qmk_firmware
+</code></pre></div></div>
+
+<p>The relevant files for me are located here:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qmk_firmware/keyboards/keychron/q1_max/ansi_encoder/config.h
+qmk_firmware/keyboards/keychron/q1_max/ansi_encoder/keymaps/via/keymap.c
+</code></pre></div></div>
+
+<h3 id="performing-modifications">Performing modifications</h3>
+<p>Referencing the documentation I added the following options to the <code class="language-plaintext highlighter-rouge">config.h</code> file.</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define TAPPING_TERM 200
+#define HOLD_ON_OTHER_KEY_PRESS
+</span></code></pre></div></div>
+
+<p>As mentioned before, tapping term controls how long you need to hold the key pressed for it to be interpeted as <code class="language-plaintext highlighter-rouge">hold</code>.</p>
+
+<p>Hold on other key press works as follows:</p>
+<blockquote>
+  <p>The “hold on other key press” mode can be enabled for all dual-role keys.
+This mode makes tap and hold keys (like Mod-Tap) work better for fast typists, or for high TAPPING_TERM settings.
+If you press a dual-role key, press another key, and then release the dual-role key, all within the tapping term, by default the dual-role key will perform its tap action. If the HOLD_ON_OTHER_KEY_PRESS option is enabled, the dual-role key will perform its hold action instead.</p>
+</blockquote>
+
+<p>I replaced <code class="language-plaintext highlighter-rouge">KC_ESC</code> with <code class="language-plaintext highlighter-rouge">MT(MOD_LCTL, KC_ESC)</code> in <code class="language-plaintext highlighter-rouge">keymap.c</code> to enable the Mod-Tap behavior.</p>
+
+<h3 id="building-and-flashing-the-custom-firmware">Building and flashing the custom firmware</h3>
+<p>Time to compile the firmware!</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qmk compile <span class="nt">-kb</span> keychron/q1_max/ansi_encoder <span class="nt">-km</span> via
+</code></pre></div></div>
+
+<p>After compiling I connected my keyboard to my computer over USB while holding <code class="language-plaintext highlighter-rouge">Esc</code> and then I flashed the firmware using QMK toolbox.</p>
+
+<p>Et voilà, my keyboard behaves as expected!</p>
+
+</article>
+
+<div class="post-nav">
+    
+    
+    <a href="/posts/harpoon/" class="prev">harpoon.zsh - quick access hooks for directories →</a>
+    
+</div>
+
+        </main>
+
+        <footer>
+            <div class="social-links">
+                
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/Alexandoooor">GitHub</a>
+                
+                
+                <a target="_blank" rel="noopener noreferrer" href="https://linkedin.com/in/alexander-magnusson-0233a4114">LinkedIn</a>
+                
+            </div>
+            <p>&copy; 2026 Alexander Magnusson. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <button id="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="theme-icon light-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="theme-icon dark-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+    </button>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to system preference
+        const currentTheme = localStorage.getItem('theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+        html.setAttribute('data-theme', currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    </script>
+</body>
+</html>

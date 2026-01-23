@@ -796,3 +796,62 @@ html[data-theme="dark"] .light-icon,
 html[data-theme="light"] .dark-icon {
     display: block;
 }
+
+/* Blockquote styling for all content */
+.content blockquote,
+.post-content blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 1.25rem;
+    margin: 1rem 0;
+    color: var(--text-secondary);
+    font-style: italic;
+    background: var(--accent-light);
+    padding: 0.75rem 1.25rem;
+    border-radius: 0 6px 6px 0;
+}
+
+.content blockquote p:last-child,
+.post-content blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+/* Table styling */
+.content table,
+.post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+}
+
+.content table th,
+.post-content table th {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.content table td,
+.post-content table td {
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    color: var(--text-secondary);
+}
+
+.content table tr:hover,
+.post-content table tr:hover {
+    background: var(--accent-light);
+}
+
+/* Lists in content */
+.content ul, .content ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+}
+
+.content li {
+    margin-bottom: 0.5rem;
+}
