@@ -9,7 +9,7 @@ I'm using a Keychron Q1 Max as my preferred keyboard. It is a really nice keyboa
 It's built like a tank, it feels nice to type on and it is wireless with 1000 Hz polling rate,
 while maintaining great battery-life.
 
-But one of the best features is that is uses [QMK](https://qmk.fm) firmware:
+But one of the best features is that it runs [QMK Firmware](https://qmk.fm):
 >QMK Firmware: Open-source keyboard firmware for Atmel AVR and Arm USB families.
 
 ### Why the need for QMK?
@@ -17,7 +17,7 @@ One thing that I do on every computer that I use is to rebind `caps` to act as `
 One option is to do it on a software-level, But that works differently on every OS and sometimes requires installing third-party software.
 Another potential problem is that remote machines might not recognize the host machine-rebinds either, which can be annoying if you're often using VMs.
 
-Remember, QMK is the firmware running the keyboard. This means that you won't have to figure out how to rebind keys on each computer that you use, your keyboard will work in the same way on any computer.
+Remember, QMK is the firmware running on the keyboard. This means that you won't have to figure out how to rebind keys on each computer that you use, your keyboard will work in the same way on any computer.
 
 QMK allows you to configure a key with a key-type called [Mod-Tap key](https://docs.qmk.fm/mod_tap).
 >The Mod-Tap key MT(mod, kc) acts like a modifier when held, and a regular keycode when tapped. In other words, you can have a key that sends Escape when you tap it, but functions as a Control or Shift key when you hold it down.
