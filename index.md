@@ -9,7 +9,7 @@ layout: default
   <article>
     <div class="post-date">{{ post.date | date: "%B %d, %Y" }}</div>
     <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-    <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 40 }}</p>
+    <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 50 }}</p>
   </article>
 {% endfor %}
 </div>
