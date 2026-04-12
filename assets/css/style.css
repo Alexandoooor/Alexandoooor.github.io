@@ -269,11 +269,28 @@ h2 a:hover {
   overflow: visible;
 }
 
+
+.post-content :not(pre) > code {
+    background: var(--code-bg);
+    padding: 0.08em 0.32em;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+    color: var(--accent);
+    border: 1px solid var(--border);
+    line-height: 1;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
 .post-content pre code {
-  background: transparent;
-  padding: 0;
-  border: none;
-  color: inherit;
+    background: transparent;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
 }
 
 /* Make nested syntax-highlighting spans inherit readable color unless overridden intentionally */
