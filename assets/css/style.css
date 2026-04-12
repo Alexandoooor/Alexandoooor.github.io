@@ -235,6 +235,7 @@ h2 a:hover {
 
 .post-content pre {
     background: var(--code-bg);
+    color: var(--code-text);
     padding: 1rem;
     border-radius: 6px;
     overflow-x: auto;
@@ -243,10 +244,18 @@ h2 a:hover {
 }
 
 .post-content pre code {
-    background: none;
+    background: transparent;
+    color: inherit;
     padding: 0;
-    color: var(--text);
     border: none;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+}
+
+/* Make nested syntax-highlighting spans inherit readable color unless overridden intentionally */
+.post-content pre code,
+.post-content pre code span,
+.post-content pre span {
+    color: inherit;
 }
 
 .post-content ul, .post-content ol {
