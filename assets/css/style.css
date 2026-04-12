@@ -251,46 +251,40 @@ h2 a:hover {
     margin-bottom: 1.25rem;
 }
 
-.post-content code {
-    background: var(--code-bg);
-    padding: 0.2em 0.4em;
-    border-radius: 3px;
-    font-size: 0.9em;
-    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
-    color: var(--accent);
-    border: 1px solid var(--border);
-}
-
-.post-content pre {
-  background: transparent;
-  padding: 0;
-  border: none;
-  margin-bottom: 1.25rem;
-  overflow: visible;
-}
-
-
+/* Inline code only */
 .post-content :not(pre) > code {
     background: var(--code-bg);
+    color: var(--accent);
     padding: 0.08em 0.32em;
+    border: 1px solid var(--border);
     border-radius: 4px;
     font-size: 0.9em;
     font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
-    color: var(--accent);
-    border: 1px solid var(--border);
     line-height: 1;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
 }
 
-.post-content pre code {
+/* Reset generic pre styling so Rouge owns block code appearance */
+.post-content pre {
     background: transparent;
+    padding: 0;
+    margin: 0 0 1.25rem 0;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+}
+
+.post-content pre code {
+    display: block;
+    background: transparent;
+    color: inherit;
     padding: 0;
     border: none;
     border-radius: 0;
     font-size: inherit;
     font-family: inherit;
-    color: inherit;
+    line-height: inherit;
 }
 
 /* Make nested syntax-highlighting spans inherit readable color unless overridden intentionally */
