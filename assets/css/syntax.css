@@ -1,20 +1,35 @@
 /* Theme-aware Rouge syntax highlighting for GitHub Pages / Jekyll */
 
 .highlight {
+  display: block;
   background: var(--code-bg);
   color: var(--code-text);
   border: 1px solid var(--border);
   border-radius: 6px;
+  margin: 0 0 1.25rem 0;
+  overflow: hidden;
+}
+
+.highlight + .highlight {
+  margin-top: 0;
 }
 
 .highlight pre {
+  display: block;
   background: transparent;
   color: inherit;
   margin: 0;
   padding: 1em;
   overflow-x: auto;
   border: 0;
-  border-radius: inherit;
+  border-radius: 0;
+  line-height: 1.5;
+}
+
+.highlight code {
+  background: transparent;
+  color: inherit;
+  border: 0;
 }
 
 /* Highlighted line */
@@ -154,53 +169,42 @@
   color: var(--code-text);
 }
 
-/* ========================= */
-/* Bash / Shell tweaks       */
-/* ========================= */
-
-/* Builtins / shell keywords */
+/* Bash / Shell tweaks */
 .highlight .nb,
 .highlight .k {
   color: var(--syntax-keyword);
   font-weight: 600;
 }
 
-/* Commands */
 .highlight .nv,
 .highlight .nx {
   color: var(--syntax-function);
 }
 
-/* Variables */
 .highlight .vg,
 .highlight .vi,
 .highlight .vm {
   color: var(--syntax-variable);
 }
 
-/* Strings */
 .highlight .s,
 .highlight .s1,
 .highlight .s2 {
   color: var(--syntax-string);
 }
 
-/* Numbers */
 .highlight .m {
   color: var(--syntax-number);
 }
 
-/* Operators / pipes / redirects */
 .highlight .o {
   color: var(--syntax-operator);
 }
 
-/* Flags / attributes */
 .highlight .na {
   color: var(--syntax-type);
 }
 
-/* Shell prompt */
 .highlight .gp {
   color: var(--syntax-prompt);
   font-weight: 700;
