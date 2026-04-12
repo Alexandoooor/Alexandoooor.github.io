@@ -1,17 +1,32 @@
-/* Tokyo Night inspired theme for Rouge */
+/* Theme-aware Rouge syntax highlighting for GitHub Pages / Jekyll */
 
 .highlight {
-  background: #1a1b26;
-  color: #c0caf5;
+  background: var(--code-bg);
+  color: var(--code-text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
 }
 
 .highlight pre {
-  background: #1a1b26;
+  background: transparent;
+  color: inherit;
+  margin: 0;
   padding: 1em;
   overflow-x: auto;
+  border: 0;
+  border-radius: inherit;
 }
 
-.highlight .hll { background-color: #292e42 }
+/* Highlighted line */
+.highlight .hll {
+  background-color: var(--accent-light);
+}
+
+/* Base text */
+.highlight,
+.highlight .w {
+  color: var(--code-text);
+}
 
 /* Comments */
 .highlight .c,
@@ -21,13 +36,13 @@
 .highlight .cpf,
 .highlight .c1,
 .highlight .cs {
-  color: #565f89;
+  color: var(--syntax-comment);
   font-style: italic;
 }
 
-/* Preprocessor (C/C++) */
+/* Preprocessor */
 .highlight .cp {
-  color: #bb9af7;   /* Same as keywords */
+  color: var(--syntax-keyword);
   font-style: normal;
 }
 
@@ -39,7 +54,7 @@
 .highlight .kp,
 .highlight .kr,
 .highlight .kt {
-  color: #bb9af7;
+  color: var(--syntax-keyword);
 }
 
 /* Strings */
@@ -57,7 +72,7 @@
 .highlight .sr,
 .highlight .s1,
 .highlight .ss {
-  color: #9ece6a;
+  color: var(--syntax-string);
 }
 
 /* Numbers */
@@ -68,94 +83,125 @@
 .highlight .mi,
 .highlight .il,
 .highlight .mo {
-  color: #ff9e64;
+  color: var(--syntax-number);
 }
 
-/* Functions / Names */
+/* Functions / methods */
 .highlight .nf,
 .highlight .fm {
-  color: #7aa2f7;
+  color: var(--syntax-function);
 }
 
-/* Classes / Types */
+/* Classes / types / exceptions / tags */
 .highlight .nc,
 .highlight .nn,
 .highlight .ne,
 .highlight .nt {
-  color: #2ac3de;
+  color: var(--syntax-type);
 }
 
 /* Variables */
 .highlight .vi,
 .highlight .vm,
 .highlight .vg {
-  color: #c0caf5;
+  color: var(--syntax-variable);
 }
 
-/* Operators */
+/* General names */
+.highlight .n,
+.highlight .no,
+.highlight .na,
+.highlight .nb,
+.highlight .bp,
+.highlight .vc {
+  color: var(--syntax-variable);
+}
+
+/* Operators / words */
 .highlight .o,
 .highlight .ow {
-  color: #89ddff;
+  color: var(--syntax-operator);
 }
 
-/* Errors */
-.highl
+/* Generic text styles */
+.highlight .gd {
+  color: var(--syntax-deleted);
+}
+
+.highlight .gi {
+  color: var(--syntax-inserted);
+}
+
+.highlight .ge {
+  font-style: italic;
+}
+
+.highlight .gs {
+  font-weight: 700;
+}
+
+.highlight .gu {
+  color: var(--syntax-type);
+}
+
+.highlight .err {
+  color: var(--syntax-error);
+  background: transparent;
+}
+
+/* Punctuation */
+.highlight .p {
+  color: var(--code-text);
+}
 
 /* ========================= */
-/* Bash / Shell (Rouge)    */
+/* Bash / Shell tweaks       */
 /* ========================= */
 
-/* Builtins / Keywords (cd, if, then, fi, for, in, do, done, exit, export) */
+/* Builtins / shell keywords */
 .highlight .nb,
 .highlight .k {
-  color: #bb9af7; /* Purple */
+  color: var(--syntax-keyword);
   font-weight: 600;
 }
 
-/* Commands (ls, git, echo, make, grep) */
+/* Commands */
 .highlight .nv,
 .highlight .nx {
-  color: #7aa2f7; /* Blue */
+  color: var(--syntax-function);
 }
 
-/* Variables ($HOME, $PATH, ${VAR}) */
+/* Variables */
 .highlight .vg,
 .highlight .vi,
 .highlight .vm {
-  color: #c0caf5;
+  color: var(--syntax-variable);
 }
 
 /* Strings */
 .highlight .s,
 .highlight .s1,
 .highlight .s2 {
-  color: #9ece6a;
+  color: var(--syntax-string);
 }
 
 /* Numbers */
 .highlight .m {
-  color: #ff9e64;
+  color: var(--syntax-number);
 }
 
-/* Operators / Pipes / Redirects (|, >, &&, ||) */
+/* Operators / pipes / redirects */
 .highlight .o {
-  color: #89ddff;
+  color: var(--syntax-operator);
 }
 
-/* Flags / Options (-la, --help) */
+/* Flags / attributes */
 .highlight .na {
-  color: #2ac3de;
+  color: var(--syntax-type);
 }
 
-/* Comments (# this is a comment) */
-.highlight .c,
-.highlight .c1 {
-  color: #565f89;
-  font-style: italic;
-}
-
-/* Prompt ($, # at line start) */
+/* Shell prompt */
 .highlight .gp {
-  color: #f7768e;
-  font-weight: bold;
+  color: var(--syntax-prompt);
+  font-weight: 700;
 }
