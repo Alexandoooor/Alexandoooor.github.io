@@ -125,7 +125,7 @@ node02 10.42.1.0/16
 node03 10.42.2.0/16
 ```
 
-For each node I added routes for the for each of the PodCIDRs `x` via the respective private IP address `y`.
+For each node I added routes for each of the PodCIDRs `x` via the respective private IP address `y`.
 I.e for `node01` I added routes for the subnets of `node02`, `node03` via their respective private IP addresses.
 
 ```
