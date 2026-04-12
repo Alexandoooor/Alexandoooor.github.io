@@ -5,27 +5,37 @@
 }
 
 :root {
-    --bg: #fcfdfe;
-    --text: #1a1a1a;
-    --text-secondary: #666666;
-    --accent: #0066cc;
-    --accent-light: #e6f2ff;
-    --border: #e5e5e5;
-    --code-bg: #ffffff;
-    --success: #16a34a;
-    --warning: #ea580c;
+  --code-bg: #f4f8fc;
+  --code-text: #243040;
+  --syntax-comment: #6b7280;
+  --syntax-keyword: #7c3aed;
+  --syntax-string: #15803d;
+  --syntax-number: #c2410c;
+  --syntax-function: #2563eb;
+  --syntax-type: #0f766e;
+  --syntax-variable: #334155;
+  --syntax-operator: #0891b2;
+  --syntax-prompt: #dc2626;
+  --syntax-error: #dc2626;
+  --syntax-inserted: #15803d;
+  --syntax-deleted: #b91c1c;
 }
 
 html[data-theme="dark"] {
-    --bg: #0f1419;
-    --text: #e5e5e5;
-    --text-secondary: #999999;
-    --accent: #4d9fff;
-    --accent-light: #1a2332;
-    --border: #2a2a2a;
-    --code-bg: #1a1f26;
-    --success: #22c55e;
-    --warning: #fb923c;
+  --code-bg: #1a1b26;
+  --code-text: #c0caf5;
+  --syntax-comment: #565f89;
+  --syntax-keyword: #bb9af7;
+  --syntax-string: #9ece6a;
+  --syntax-number: #ff9e64;
+  --syntax-function: #7aa2f7;
+  --syntax-type: #2ac3de;
+  --syntax-variable: #c0caf5;
+  --syntax-operator: #89ddff;
+  --syntax-prompt: #f7768e;
+  --syntax-error: #f7768e;
+  --syntax-inserted: #9ece6a;
+  --syntax-deleted: #f7768e;
 }
 
 /* Still respect system preference as default */
@@ -234,21 +244,18 @@ h2 a:hover {
 }
 
 .post-content pre {
-    background: var(--code-bg);
-    color: var(--code-text);
-    padding: 1rem;
-    border-radius: 6px;
-    overflow-x: auto;
-    margin-bottom: 1.25rem;
-    border: 1px solid var(--border);
+  background: transparent;
+  padding: 0;
+  border: none;
+  margin-bottom: 1.25rem;
+  overflow: visible;
 }
 
 .post-content pre code {
-    background: transparent;
-    color: inherit;
-    padding: 0;
-    border: none;
-    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: inherit;
 }
 
 /* Make nested syntax-highlighting spans inherit readable color unless overridden intentionally */
