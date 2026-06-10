@@ -4,32 +4,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal portfolio/blog of Alexander Magnusson, built with Jekyll 4.3 and served via GitHub Pages at https://portfolio.alexandermagnusson.net (custom domain configured in `CNAME`).
+Personal portfolio/blog of Alexander Magnusson, built with Jekyll 4 and served via GitHub Pages at https://portfolio.alexandermagnusson.net (custom domain configured in `CNAME`).
 
 ## Commands
 
 ```sh
-bundle install              # install dependencies (Jekyll, jekyll-paginate, rouge, webrick)
+bundle install              # install dependencies (Jekyll, jekyll-paginate-v2, rouge, webrick)
 bundle exec jekyll serve    # local dev server at http://localhost:4000 with auto-regeneration
-bundle exec jekyll build    # build the site into _site/
+bundle exec jekyll build    # build the site into _site/ (gitignored)
 ```
 
-There are no tests, linters, or CI workflows.
+There are no tests or linters.
 
-## Important: `_site/` is committed
+## Deployment
 
-Unlike a typical Jekyll setup, the built `_site/` directory is tracked in git. After changing any source file (posts, layouts, CSS, config), run `bundle exec jekyll build` and commit the regenerated `_site/` output together with the source change.
+Pushes to `master` are built and deployed by the GitHub Pages workflow in `.github/workflows/pages.yml`, using the repo's own Jekyll version from `Gemfile.lock` (which is committed — keep it updated when changing the Gemfile). Do not commit `_site/`; it is build output and gitignored.
 
 ## Architecture
 
 Standard Jekyll structure — content is Markdown, rendered through Liquid layouts:
 
-- `_config.yml` — site/author metadata, kramdown + rouge (no line numbers), pagination (5 posts/page at `/posts/page:num/`), permalink scheme `/posts/:title/`.
-- `_layouts/default.html` — the entire page shell: header/nav, footer, and the dark-mode toggle (inline JS that sets `data-theme` on `<html>` and persists to `localStorage`, defaulting to system preference).
+- `_config.yml` — site/author metadata, kramdown + rouge (no line numbers), jekyll-paginate-v2 settings (5 posts/page), permalink scheme `/posts/:title/`.
+- `_layouts/default.html` — the entire page shell: header/nav, footer, and dark mode. An inline `<head>` script sets `data-theme` before first paint (do not move it to the body — that reintroduces a theme flash); the toggle button at the end of `<body>` persists the choice to `localStorage`.
 - `_layouts/post.html` — wraps `default`, adds post date/title header and previous/next navigation.
-- `_posts/YYYY-MM-DD-title.md` — blog posts. Front matter convention: `layout: post`, `title`, `author: Alexander`, `tags` (space-separated string).
+- `_posts/YYYY-MM-DD-title.md` — blog posts. Front matter convention: `layout: post`, `title`, `author: Alexander`, `tags` (space-separated string). Images use kramdown inline attribute lists for lazy loading: `![alt](/assets/img/x.png){: loading="lazy"}`.
 - `_data/projects.yml` — drives the "Projects" cards on the homepage (`index.md`). Each entry: `name`, optional `url`, `description`, `tags` list. Commented-out entries serve as templates.
-- `posts/index.html` — paginated post listing using `jekyll-paginate` (`paginator.posts`).
+- `posts/index.html` — paginated post listing; jekyll-paginate-v2 requires its `pagination: enabled: true` front matter, and pagination settings live under the `pagination:` key in `_config.yml`.
 
 ## Theming conventions
 
