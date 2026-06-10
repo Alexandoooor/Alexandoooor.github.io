@@ -180,7 +180,7 @@ The next step was adding the public IP adress and the ingress hostname to my loc
 
 Et voilà, the Limit Order Book is now accessible from my local computer.
 
-![Limit Order Book](/assets/img/LimitOrderBookK8S.png)
+![Limit Order Book](/assets/img/LimitOrderBookK8S.png){: loading="lazy"}
 
 #### Summary
 This was a fun (and at times frustrating) project. It was very satisfactory finally getting all of the pieces working together.
