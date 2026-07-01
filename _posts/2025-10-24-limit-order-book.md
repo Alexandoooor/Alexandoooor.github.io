@@ -128,7 +128,7 @@ A limit order book as a concept is quite simple. Implenting it was a bit more co
 There are a lot of edge cases like partially filled orders, traversing multiple levels that needs to be handled.
 Furthermore, many of the components are highly interconnected and it is important that updates to one component is correctly propagated to the others, in the right order.
 
-The source of my Limit Order Book implementation is available in this [github repo](https://github.com/Alexandoooor/limit-order-book).
+The source of my Limit Order Book implementation is available in this [github repo](https://github.com/Alexandoooor/limit-order-book-go).
 
 * * *
 ### Bonus content
