@@ -8,7 +8,7 @@ tags: kubernetes cloud
 ### Setting up k8s from scratch
 
 In order to learn more about kubernetes I decided to set up a cluster from scratch.
-The goal is to have a working cluster that I can deploy my [Limit Order Book](https://github.com/Alexandoooor/limit-order-book) in.
+The goal is to have a working cluster that I can deploy my [Limit Order Book](https://github.com/Alexandoooor/limit-order-book-go) in.
 
 I found the tutorial series _[RKE2 the Hard Way](https://support.tools/training/rke2-hard-way/01-introduction-prerequisites/)_ that guides you through setting up a
 Kubernetes cluster with features similar to Rancher Kubernetes Engine 2 ([RKE2](https://docs.rke2.io)).
