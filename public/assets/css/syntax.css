@@ -1,0 +1,41 @@
+/* Theme-aware Shiki syntax highlighting (Astro).
+   Shiki inlines the light theme's colors and exposes the dark theme's
+   via --shiki-dark* custom properties; the rules below switch between
+   them based on the site's data-theme attribute. */
+
+.astro-code {
+  display: block;
+  background: var(--code-bg) !important;
+  color: var(--code-text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 0 0 1.25rem 0;
+  padding: 1em;
+  overflow-x: auto;
+  line-height: 1.5;
+  font-size: 0.875rem;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+}
+
+.astro-code + .astro-code {
+  margin-top: 0;
+}
+
+.astro-code code {
+  display: block;
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+/* Dark theme: swap every token to the dark theme's colors */
+[data-theme="dark"] .astro-code,
+[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}

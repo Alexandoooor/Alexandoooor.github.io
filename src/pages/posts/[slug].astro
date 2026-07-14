@@ -1,0 +1,42 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getSortedPosts } from '../../lib/posts';
+import { formatDate } from '../../consts';
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      // posts are sorted newest-first: i-1 is the next (newer) post, i+1 the previous (older)
+      next: posts[i - 1] ?? null,
+      previous: posts[i + 1] ?? null,
+    },
+  }));
+}
+
+const { post, next, previous } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Base title={post.data.title}>
+  <article class="post-content">
+    <div class="post-header">
+      <div class="post-date">{formatDate(post.data.date)}</div>
+      <h1>{post.data.title}</h1>
+    </div>
+
+    <Content />
+  </article>
+
+  <div class="post-nav">
+    {next && (
+      <a href={`/posts/${next.id}/`} class="next">&larr; {next.data.title}</a>
+    )}
+    {previous && (
+      <a href={`/posts/${previous.id}/`} class="prev">{previous.data.title} &rarr;</a>
+    )}
+  </div>
+</Base>

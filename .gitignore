@@ -1,5 +1,7 @@
 .DS_Store
-.bundle
-.ruby-version
-_site/
-.jekyll-cache/
+
+# Astro / Node
+node_modules/
+dist/
+.astro/
+npm-debug.log*

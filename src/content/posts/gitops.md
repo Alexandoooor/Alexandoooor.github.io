@@ -1,8 +1,8 @@
 ---
-layout: post
 title:  "GitOps with ArgoCD and Helm charts"
 author: Alexander
 tags: kubernetes cloud
+date: 2025-11-24
 ---
 
 ### Using GitOps in my Kubernetes cluster

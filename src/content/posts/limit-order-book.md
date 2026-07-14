@@ -1,8 +1,8 @@
 ---
-layout: post
 title:  "Implementing a Limit Order Book in golang"
 author: Alexander
 tags: golang
+date: 2025-10-24
 ---
 
 ## What is a Limit Order Book?
@@ -16,7 +16,8 @@ A *Limit* Order Book is an order book that is comprised of [Limit orders](https:
 Another important concept is [Price Levels](https://en.wikipedia.org/wiki/Order_book):
 >When several orders contain the same price, they are referred to as being on a price level. Practically, this means that if a bid comes at that price level, all the sell orders on that price level could potentially fulfill that.
 
-![Example of a real Order Book](/assets/img/ExampleRealBook.png){: loading="lazy"}
+<img src="/assets/img/ExampleRealBook.png" alt="Example of a real Order Book" loading="lazy" />
+
 *Example of a real order book*
 
 * * *
@@ -139,7 +140,8 @@ It allows a user to add buy or sell orders with a given price and size. It shows
 
 ***full disclosure:** it is mostly vibe-coded using LLMs*
 
-![Limit Order Book](/assets/img/LimitOrderBook.png){: loading="lazy"}
+<img src="/assets/img/LimitOrderBook.png" alt="Limit Order Book" loading="lazy" />
+
 *Limit Order Book Web-UI*
 
 #### Persitency

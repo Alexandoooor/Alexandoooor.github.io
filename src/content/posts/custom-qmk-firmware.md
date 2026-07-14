@@ -1,8 +1,8 @@
 ---
-layout: post
 title:  "Rolling custom QMK firmware for my Keychron keyboard"
 author: Alexander
 tags: firmware QMK Keyboard
+date: 2026-01-23
 ---
 
 I'm using a Keychron Q1 Max as my preferred keyboard. It is a really nice keyboard.

@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import { getSortedPosts } from '../lib/posts';
+import projects from '../data/projects.json';
+
+const recentPosts = (await getSortedPosts()).slice(0, 3);
+---
+
+<Base>
+  <div class="about-page"><h1>Recent Posts</h1></div>
+
+  <PostList posts={recentPosts} />
+
+  <div class="view-all-posts">
+    <a href="/posts" class="btn-view-all">View All Posts</a>
+  </div>
+
+  <div class="about-page"><h1>Projects</h1></div>
+
+  <div class="projects">
+    {projects.map((project) => (
+      <div class="project-card">
+        {project.url ? (
+          <div class="project-title"><a target="_blank" rel="noopener noreferrer" href={project.url}>{project.name}</a></div>
+        ) : (
+          <div class="project-title">{project.name}</div>
+        )}
+        <p class="project-desc">{project.description}</p>
+        <div class="project-tags">
+          {project.tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</Base>

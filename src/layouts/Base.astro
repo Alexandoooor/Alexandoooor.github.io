@@ -1,15 +1,25 @@
+---
+import { SITE } from '../consts';
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/assets/css/syntax.css' | relative_url }}">
-    <link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
+    <title>{title ? `${title} - ${SITE.title}` : SITE.title}</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/syntax.css">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
-    <script>
+    <script is:inline>
         // Set the theme before first paint to avoid a flash of the wrong theme
         document.documentElement.setAttribute('data-theme',
             localStorage.getItem('theme') ||
@@ -20,31 +30,31 @@
 <body>
     <div class="container">
         <header>
-            <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
-            <p class="subtitle">{{ site.description }}</p>
+            <h1><a href="/">{SITE.title}</a></h1>
+            <p class="subtitle">{SITE.description}</p>
             <nav>
-                <a href="{{ '/' | relative_url }}">Home</a>
-                <a href="{{ '/posts' | relative_url }}">Posts</a>
-                <a href="{{ '/about' | relative_url }}">About</a>
-                <a target="_blank" rel="noopener noreferrer" href="https://github.com/{{ site.author.github }}">GitHub</a>
-                <a href="mailto:{{ site.author.email }}">Contact</a>
+                <a href="/">Home</a>
+                <a href="/posts">Posts</a>
+                <a href="/about">About</a>
+                <a target="_blank" rel="noopener noreferrer" href={`https://github.com/${SITE.author.github}`}>GitHub</a>
+                <a href={`mailto:${SITE.author.email}`}>Contact</a>
             </nav>
         </header>
 
         <main class="content">
-            {{ content }}
+            <slot />
         </main>
 
         <footer>
             <div class="social-links">
-                {% if site.author.github %}
-                <a target="_blank" rel="noopener noreferrer" href="https://github.com/{{ site.author.github }}">GitHub</a>
-                {% endif %}
-                {% if site.author.linkedin %}
-                <a target="_blank" rel="noopener noreferrer" href="https://linkedin.com/in/{{ site.author.linkedin }}">LinkedIn</a>
-                {% endif %}
+                {SITE.author.github && (
+                    <a target="_blank" rel="noopener noreferrer" href={`https://github.com/${SITE.author.github}`}>GitHub</a>
+                )}
+                {SITE.author.linkedin && (
+                    <a target="_blank" rel="noopener noreferrer" href={`https://linkedin.com/in/${SITE.author.linkedin}`}>LinkedIn</a>
+                )}
             </div>
-            <p>&copy; {{ 'now' | date: "%Y" }} {{ site.author.name }}. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} {SITE.author.name}. All rights reserved.</p>
         </footer>
     </div>
 
@@ -65,7 +75,7 @@
         </svg>
     </button>
 
-    <script>
+    <script is:inline>
         const themeToggle = document.getElementById('theme-toggle');
         const html = document.documentElement;
 

@@ -1,0 +1,20 @@
+---
+import { excerpt, type Post } from '../lib/posts';
+import { formatDate } from '../consts';
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<div class="posts">
+  {posts.map((post) => (
+    <article>
+      <div class="post-date">{formatDate(post.data.date)}</div>
+      <h2><a href={`/posts/${post.id}/`}>{post.data.title}</a></h2>
+      <p class="post-excerpt">{excerpt(post)}</p>
+    </article>
+  ))}
+</div>

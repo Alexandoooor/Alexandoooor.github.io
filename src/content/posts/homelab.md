@@ -1,8 +1,8 @@
 ---
-layout: post
 title:  "My Homelab Setup"
 author: Alexander
 tags: homelab self-hosting
+date: 2025-10-24
 ---
 
 My Homelab is used, both as a lab, where I tinker and experiment,
@@ -24,7 +24,8 @@ All of the internal DNS records for my subdomains point to the IP of my Traefik 
 
 The Cloud Gateway runs a WireGuard VPN server so that I can securely access services remotely.
 
-![Diagram of my Homelab](/assets/img/homelab-diag.png){: loading="lazy"}
+<img src="/assets/img/homelab-diag.png" alt="Diagram of my Homelab" loading="lazy" />
+
 *An overview of my homelab*
 
 ### Proxmox Server

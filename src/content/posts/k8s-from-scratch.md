@@ -1,8 +1,8 @@
 ---
-layout: post
 title:  "Kubernetes the hard way"
 author: Alexander
 tags: kubernetes cloud
+date: 2025-10-29
 ---
 
 ### Setting up k8s from scratch
@@ -180,7 +180,8 @@ The next step was adding the public IP adress and the ingress hostname to my loc
 
 Et voilà, the Limit Order Book is now accessible from my local computer.
 
-![Limit Order Book](/assets/img/LimitOrderBookK8S.png){: loading="lazy"}
+<img src="/assets/img/LimitOrderBookK8S.png" alt="Limit Order Book" loading="lazy" />
+
 
 #### Summary
 This was a fun (and at times frustrating) project. It was very satisfactory finally getting all of the pieces working together.

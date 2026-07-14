@@ -1,8 +1,8 @@
 ---
-layout: post
 title:  "harpoon.zsh - quick access hooks for directories"
 author: Alexander
 tags: scripting shell zsh
+date: 2026-01-20
 ---
 
 [harpoon.zsh](https://github.com/Alexandoooor/harpoon) is a small zsh script that allows hooking paths to aliases
