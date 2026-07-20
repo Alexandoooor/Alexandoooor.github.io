@@ -8,10 +8,11 @@ date: 2025-11-24
 ### Using GitOps in my Kubernetes cluster
 
 In order to learn about Kubernetes I recently set up my own cluster from scratch,
-as documented in the previous post *[Kubernetes the hard way](https://portfolio.alexandermagnusson.net/posts/k8s-from-scratch/)*.
+as documented in the previous post *[Kubernetes the hard way](/posts/k8s-from-scratch/)*.
 
-I used the cluster to deploy my own [Limit order book](https://github.com/Alexandoooor/limit-order-book-go/tree/master) application.
-I started out by putting the manifest files in in a `/k8s` subdirectory in the application Github repository.
+I used the cluster to deploy my own [Limit order book](https://github.com/Alexandoooor/limit-order-book-go/tree/master) application,
+which I wrote about in *[Implementing a Limit Order Book in golang](/posts/limit-order-book/)*.
+I started out by putting the manifest files in a `/k8s` subdirectory in the application Github repository.
 
 My workflow was as follows.
 
@@ -26,20 +27,20 @@ I wanted to automate this flow and make it work closer to how it would in a prod
 
 I started by converting my manifests into Helm charts.
 
-By creating templates for all my resources that all referenced a single values-file made it got easier to get an
+Creating templates for all of my resources, all referencing a single values-file, made it easier to get an
 overview of the current state of my cluster. It also made it easier to switch between different versions of the application.
 
 
 ### Automated deployments with ArgoCD
 After installing ArgoCD in my cluster I could add my application running the following command.
 
-```
+```bash
 argocd app create limit-order-book --repo https://github.com/Alexandoooor/limit-order-book-helm.git --path limit-order-book --dest-server https://kubernetes.default.svc --dest-namespace default
 ```
 
 By setting the sync-policy to automated ArgoCD will automatically sync the application when it detects differences in the manifests in git.
 
-```
+```bash
 argocd app set limit-order-book --sync-policy automated
 ```
 
@@ -52,9 +53,9 @@ I instead decided to use [sealed secrets](https://github.com/bitnami-labs/sealed
 
 Sealed secrets works by installing a controller in the cluster. The controller has a public encryption key, which you use to encrypt a secret, the Postgres password for example.
 The result is a sealed (encrypted) secret which can be included in the Helm charts of the application.
-The sealed secrets controller is the only holder of the private key needed unencrypt (unseal) the secret so that it can be used as a regular Kubernetes secret.
+The sealed secrets controller is the only holder of the private key needed to decrypt (unseal) the secret so that it can be used as a regular Kubernetes secret.
 
-```
+```bash
 kubectl create secret generic limit-order-book-postgres-secret \
   --from-literal=ps_password=hunter2 \
   --dry-run=client -o yaml > secret.yaml
@@ -62,7 +63,7 @@ kubectl create secret generic limit-order-book-postgres-secret \
 
 The above command outputs the `secret.yaml` with the content below.
 
-```
+```yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -74,12 +75,12 @@ stringData:
 
 Running kubeseal as follows uses the public key to encrypt the secret into `sealedsecret.yaml`:
 
-```
+```bash
 kubeseal --format yaml < secret.yaml > sealedsecret.yaml
 ```
 
-The resulting `sealedsecrets.yaml` contains the encrypted secret which can safely be added to the git repository, since the controller is the only one holding the private key needed to unseal the secret.
-```
+The resulting `sealedsecret.yaml` contains the encrypted secret which can safely be added to the git repository, since the controller is the only one holding the private key needed to unseal the secret.
+```yaml
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:

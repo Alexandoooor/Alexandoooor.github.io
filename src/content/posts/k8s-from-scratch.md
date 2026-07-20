@@ -8,7 +8,7 @@ date: 2025-10-29
 ### Setting up k8s from scratch
 
 In order to learn more about kubernetes I decided to set up a cluster from scratch.
-The goal is to have a working cluster that I can deploy my [Limit Order Book](https://github.com/Alexandoooor/limit-order-book-go) in.
+The goal is to have a working cluster that I can deploy my [Limit Order Book](/posts/limit-order-book/) in.
 
 I found the tutorial series _[RKE2 the Hard Way](https://support.tools/training/rke2-hard-way/01-introduction-prerequisites/)_ that guides you through setting up a
 Kubernetes cluster with features similar to Rancher Kubernetes Engine 2 ([RKE2](https://docs.rke2.io)).
@@ -17,7 +17,7 @@ To further spice things up I decided to use Digital Ocean Droplets as the VMs ho
 This meant that I couldn't just blindly copy-paste the commands from the tutorial, I actually had to do some manual intervention
 in order to get it working. ;)
 
-Regardless of my choice to host it on Digital Ocean it there were some issues with the steps in the tutorial that I had to figure out.
+Regardless of my choice to host it on Digital Ocean, there were some issues with the steps in the tutorial that I had to figure out.
 
 ### Issues
 
@@ -25,7 +25,7 @@ Regardless of my choice to host it on Digital Ocean it there were some issues wi
 Step 4 in [Part 2 – Certificate Authority and TLS Certificates](https://support.tools/training/rke2-hard-way/02-certificate-authority-tls-certificates/)
 you are instructed to create the Kubernetes API server certificate request file as follows:
 
-```
+```bash
 cat > kubernetes-csr.json << EOF
 {
   "CN": "kubernetes",
@@ -62,7 +62,7 @@ EOF
 
 This CSR is then used to create a certificate:
 
-```
+```bash
 cfssl gencert \
   -profile=kubernetes \
   -ca=ca.pem \
@@ -80,7 +80,7 @@ I later found out that Digital Ocean has something called [Virtual Private Cloud
 
 It turns out that all of my VMs were connected to a VPC with "private" IP addresses in the `10.110.0.0/20` range.
 
-```
+```text
 # Private IPs
 10.110.0.3    node01
 10.110.0.2    node02
@@ -91,7 +91,7 @@ Switching to the private IP addresses did not solve all of my problems though.
 
 In [Part 8 – Installing Cilium CNI](https://support.tools/training/rke2-hard-way/08-installing-cilium-cni/) you are instructed to test the networking between pods as below
 
-```
+```bash
 # Create a test namespace
 kubectl create ns cilium-test
 
@@ -119,7 +119,7 @@ I found out that my CNI-plugin of choice, [Cilium](https://cilium.io/) did not a
 _(Caveat: there is absolutely a possibility that I might have misunderstood how to properly configure Cilium)._ The way I managed to fix the issue was by manually adding routes between the nodes.
 
 Each node had a PodCIDR as follows `10.42.x.0/16` where `x is in {0,1,2}`.
-```
+```text
 node01 10.42.0.0/16
 node02 10.42.1.0/16
 node03 10.42.2.0/16
@@ -128,13 +128,13 @@ node03 10.42.2.0/16
 For each node I added routes for each of the PodCIDRs `x` via the respective private IP address `y`.
 I.e for `node01` I added routes for the subnets of `node02`, `node03` via their respective private IP addresses.
 
-```
+```bash
 # Adding route to PodCIDR x via IP y
 ip route add 10.42.x.0/24 via 10.110.0.y
 ```
 
 Example for `node01`.
-```
+```text
 # Routes for node01 to node02 and node03
 10.42.1.0/24 via 10.110.0.2 dev eth1
 10.42.2.0/24 via 10.110.0.4 dev eth1
@@ -142,19 +142,19 @@ Example for `node01`.
 
 Adding the respective routes for all nodes as above. Resolves the issue and allows pods to communicate with pods on other nodes.
 
-Finally! All is good now right? No not quite?
+Finally! All is good now right? No, not quite.
 
 #### Certificate issues
-The next step after getting the networking between pods running is to setup DNS in the cluster.
+The next step after getting the networking between pods running is to set up DNS in the cluster.
 > DNS resolution is critical in a Kubernetes cluster because:
 > - It enables services to be discovered by their names rather than IP addresses
 > - It allows pods to find and communicate with other pods and services
 > - It provides a stable naming scheme even when IPs change due to pod rescheduling
 
 CoreDNS runs a service `kube-dns`. In the tutorial cluster services are allocated IP addresses in the range `10.43.0.0/16`, aka the ServiceCIDR
-But since the CSR is missing an entry for the Kubernetes ClusterIP (`10.43.0.1`) I would encouter connection errors.
+But since the CSR is missing an entry for the Kubernetes ClusterIP (`10.43.0.1`) I would encounter connection errors.
 
-```
+```log
 [INFO] plugin/ready: Still waiting on: "kubernetes"
 [WARNING] plugin/kubernetes: Kubernetes API connection failure: \
 Get "https://10.43.0.1:443/version": \
@@ -167,13 +167,13 @@ To solve this I had to go back to the Kubernetes API server certificate request 
 I finally had a working Kubernetes cluster!
 I deployed my Limit Order Book application in the cluster and added an ingress in order to be able to access it externally.
 
-```
+```text
 NAME                       CLASS   HOSTS                    ADDRESS          PORTS   AGE
 limit-order-book-ingress   nginx   limit-order-book.local   <PUBLIC-IP>      80      12m
 ```
 
-The next step was adding the public IP adress and the ingress hostname to my local computers `/etc/hosts`
-```
+The next step was adding the public IP address and the ingress hostname to my local computer's `/etc/hosts`
+```text
 #/etc/hosts
 <PUBLIC-IP> limit-order-book.local
 ```
@@ -193,3 +193,5 @@ Especially since the pod-to-pod networking errors depended on node scheduling an
 
 I also enjoyed getting to play around with Digital Ocean Droplets.
 In a production scenario you would use a managed Kubernetes service, but this was a great learning setup.
+
+*Next in this series: [GitOps with ArgoCD and Helm charts](/posts/gitops/), where I automate deployments to this cluster.*

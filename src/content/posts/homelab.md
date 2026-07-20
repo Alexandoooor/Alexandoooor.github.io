@@ -6,7 +6,7 @@ date: 2025-10-24
 ---
 
 My Homelab is used, both as a lab, where I tinker and experiment,
-but it is also used to self-host sevices that I use in my everyday life,
+but it is also used to self-host services that I use in my everyday life,
 such as Home Assistant and Samba shares.
 
 ## Setup
@@ -33,7 +33,7 @@ Proxmox makes it easy to deploy containers and virtual machines for running serv
 
 I currently self-host
 - Gitea
-- Gitea-mirror (mirrors github respositories to my gitea instance)
+- Gitea-mirror (mirrors github repositories to my gitea instance)
 - Traefik (for reverse proxy)
 - Vaultwarden (Self-hosted bitwarden server)
 - Home Assistant

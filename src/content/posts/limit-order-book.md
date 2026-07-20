@@ -57,8 +57,8 @@ Price levels are modeled as a linked list. Where each Level keeps a reference `n
 
 A level also contains `Volume` and `Count`. The volume is the total amount of shares contained in each order and the count is the number of orders in the level.
 
-Furthermore, the orders in modeled as a doubly-linked list, `headOrder` and `tailOrder` are references to the first and last orders in the list, ordered by when the orders were placed.
-This is to determine which order is to be matched against if there are multiple candiates that satisfy the conditions for execution of an incoming order.
+Furthermore, the orders are modeled as a doubly-linked list, `headOrder` and `tailOrder` are references to the first and last orders in the list, ordered by when the orders were placed.
+This is to determine which order is to be matched against if there are multiple candidates that satisfy the conditions for execution of an incoming order.
 
 ```go
 type Level struct {
@@ -103,14 +103,14 @@ type Order struct {
 	parentLevel *Level
 }
 ```
-The members are quite straight forward. As previously mentioned orders are structured as a doubly-linked list.
+The members are quite straightforward. As previously mentioned orders are structured as a doubly-linked list.
 - The reference to the `parentLevel` is needed to update the level `Count` and `Volume` when an order is added or removed.
 - The member `Remaining` is needed since orders can be partially filled.
 
 * * *
 #### Trades
 
-The `Trade` type is self explanatory.
+The `Trade` type is self-explanatory.
 ```go
 type Trade struct {
 	ID       uuid.UUID
@@ -125,11 +125,13 @@ type Trade struct {
 * * *
 ### Summary
 This was an interesting project and a fun way to practice writing Go.
-A limit order book as a concept is quite simple. Implenting it was a bit more complicated though.
-There are a lot of edge cases like partially filled orders, traversing multiple levels that needs to be handled.
-Furthermore, many of the components are highly interconnected and it is important that updates to one component is correctly propagated to the others, in the right order.
+A limit order book as a concept is quite simple. Implementing it was a bit more complicated though.
+There are a lot of edge cases like partially filled orders, traversing multiple levels that need to be handled.
+Furthermore, many of the components are highly interconnected and it is important that updates to one component are correctly propagated to the others, in the right order.
 
 The source of my Limit Order Book implementation is available in this [github repo](https://github.com/Alexandoooor/limit-order-book-go).
+
+*This project continues in [Kubernetes the hard way](/posts/k8s-from-scratch/), where I deploy it in a cluster built from scratch, and in [GitOps with ArgoCD and Helm charts](/posts/gitops/), where its deployment is automated.*
 
 * * *
 ### Bonus content
@@ -144,8 +146,8 @@ It allows a user to add buy or sell orders with a given price and size. It shows
 
 *Limit Order Book Web-UI*
 
-#### Persitency
-I have also dabbled with persiting the state of the order book.
+#### Persistence
+I have also dabbled with persisting the state of the order book.
 I have tried both dumping it to JSON and also writing and reading the state to a PostgreSQL database.
 
 But I have not figured out completely when to read/write the state of the order book to the DB in order to keep the state correct.
