@@ -28,7 +28,7 @@ side (bid/ask) and a map with all of the current orders. It was also helpful to 
 
 In addition I also stored a slice of all executed trades. This is technically a separate component and not a part of an order book, but it is convenient to validate that the order matching works as expected.
 
-```golang
+```go
 type OrderBook struct {
 	levels     map[Side]map[int]*Level
 	orders     map[uuid.UUID]*Order
@@ -41,7 +41,7 @@ type OrderBook struct {
 
 The levels are split up into the respective sides.
 
-```golang
+```go
 type Side int
 
 const (
@@ -60,7 +60,7 @@ A level also contains `Volume` and `Count`. The volume is the total amount of sh
 Furthermore, the orders in modeled as a doubly-linked list, `headOrder` and `tailOrder` are references to the first and last orders in the list, ordered by when the orders were placed.
 This is to determine which order is to be matched against if there are multiple candiates that satisfy the conditions for execution of an incoming order.
 
-```golang
+```go
 type Level struct {
 	Price     int
 	Volume    int
@@ -90,7 +90,7 @@ The matching engine will then need to traverse the list to the next level, the l
 * * *
 #### Orders
 Orders are modeled by the `Order` type.
-```golang
+```go
 type Order struct {
 	ID          uuid.UUID
 	Side        Side
@@ -111,7 +111,7 @@ The members are quite straight forward. As previously mentioned orders are struc
 #### Trades
 
 The `Trade` type is self explanatory.
-```golang
+```go
 type Trade struct {
 	ID       uuid.UUID
 	Price    int

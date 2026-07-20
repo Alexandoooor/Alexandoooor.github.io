@@ -1,8 +1,10 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://portfolio.alexandermagnusson.net',
+  integrations: [sitemap()],
   markdown: {
     shikiConfig: {
       // Dual themes so code blocks follow the site's light/dark toggle
